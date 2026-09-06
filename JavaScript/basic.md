@@ -5349,3 +5349,142 @@ document.addEventListener("keydown", function(event) {
 
 - **`keydown`** — use when you want the action to happen as soon as the key is pressed, or repeatedly while held (movement, shortcuts)
 - **`keyup`** — use when you want the action to happen after the key is fully released (one-shot triggers)
+
+---
+
+## Hide and Show HTML Elements
+
+Three main ways to hide and show elements in JavaScript — each behaves differently.
+
+---
+
+### Using `display`
+
+Completely removes the element from the page — takes up no space.
+
+```javascript
+const el = document.getElementById("myEl");
+
+el.style.display = "none";   // hide — element gone, no space
+el.style.display = "block";  // show — back as a block element
+el.style.display = "";       // remove inline style, revert to CSS default
+```
+
+---
+
+### Using `visibility`
+
+Hides the element visually but it still takes up space in the layout.
+
+```javascript
+el.style.visibility = "hidden";  // invisible but still occupies space
+el.style.visibility = "visible"; // back to visible
+```
+
+---
+
+### Using `opacity`
+
+Makes the element transparent but it still takes up space and can still receive clicks.
+
+```javascript
+el.style.opacity = "0";  // fully transparent
+el.style.opacity = "1";  // fully visible
+el.style.opacity = "0.5"; // 50% transparent
+```
+
+---
+
+### The difference
+
+```
+display: none      — gone from layout, no space, no clicks
+visibility: hidden — invisible, keeps space, no clicks
+opacity: 0         — invisible, keeps space, still clickable
+```
+
+---
+
+### Toggle with classList — the clean way
+
+The best practice is to define a `.hidden` class in CSS and toggle it with JavaScript instead of setting inline styles.
+
+```css
+/* style.css */
+.hidden {
+    display: none;
+}
+```
+
+```javascript
+const el = document.getElementById("myEl");
+const btn = document.getElementById("toggleBtn");
+
+btn.addEventListener("click", function() {
+    el.classList.toggle("hidden");
+});
+```
+
+Clean, reusable, and keeps styling in CSS where it belongs.
+
+---
+
+### Practical example — show/hide password
+
+```html
+<!-- index.html -->
+<input type="password" id="passwordInput" />
+<button id="toggleBtn">Show</button>
+```
+
+```javascript
+// index.js
+const passwordInput = document.getElementById("passwordInput");
+const toggleBtn = document.getElementById("toggleBtn");
+
+toggleBtn.addEventListener("click", function() {
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleBtn.textContent = "Hide";
+    } else {
+        passwordInput.type = "password";
+        toggleBtn.textContent = "Show";
+    }
+});
+```
+
+---
+
+### Practical example — accordion / toggle section
+
+```html
+<!-- index.html -->
+<button id="toggleBtn">Show Details</button>
+<div id="details" class="hidden">
+    <p>This is the hidden content that shows on click.</p>
+</div>
+```
+
+```javascript
+// index.js
+const toggleBtn = document.getElementById("toggleBtn");
+const details = document.getElementById("details");
+
+toggleBtn.addEventListener("click", function() {
+    details.classList.toggle("hidden");
+    toggleBtn.textContent = details.classList.contains("hidden")
+        ? "Show Details"
+        : "Hide Details";
+});
+```
+
+---
+
+### Quick reference
+
+| Method                          | Space kept? | Clickable? | Best for              |
+|---------------------------------|-------------|------------|-----------------------|
+| `display: none`                 | No          | No         | Fully removing element |
+| `visibility: hidden`            | Yes         | No         | Hiding without shifting layout |
+| `opacity: 0`                    | Yes         | Yes        | Fade effects          |
+| `classList.toggle("hidden")`    | No          | No         | Clean toggle pattern  |
