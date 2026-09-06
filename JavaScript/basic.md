@@ -5746,3 +5746,251 @@ toggleBtn.addEventListener("click", function() {
 | `el.classList.replace("a","b")` | Replace class a with class b                     |
 | `el.classList.length`           | Number of classes                                |
 | `el.className`                  | Full class string — replaces all when set        |
+
+---
+
+## Rock Paper Scissors
+
+A practical project using arrays, objects, DOM manipulation, classList, event listeners, conditionals, and Math.random() — all covered so far.
+
+### HTML
+
+```html
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Rock Paper Scissors</h1>
+
+    <div id="choices">
+      <button class="choice-btn" data-choice="rock">🪨 Rock</button>
+      <button class="choice-btn" data-choice="paper">📄 Paper</button>
+      <button class="choice-btn" data-choice="scissors">✂️ Scissors</button>
+    </div>
+
+    <div id="result">
+      <p id="playerChoice">Player: —</p>
+      <p id="computerChoice">Computer: —</p>
+      <p id="outcome"></p>
+    </div>
+
+    <div id="score">
+      <span>Player: <strong id="playerScore">0</strong></span>
+      <span>Computer: <strong id="computerScore">0</strong></span>
+      <span>Draws: <strong id="drawScore">0</strong></span>
+    </div>
+
+    <button id="resetBtn">Reset Score</button>
+
+    <script src="index.js"></script>
+  </body>
+</html>
+```
+
+### CSS
+
+```css
+/* style.css */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #1a1a2e;
+    color: white;
+    font-family: Arial, sans-serif;
+    gap: 32px;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+#choices {
+    display: flex;
+    gap: 16px;
+}
+
+.choice-btn {
+    padding: 20px 32px;
+    font-size: 1.2rem;
+    border: 2px solid #ffffff30;
+    border-radius: 12px;
+    background-color: #16213e;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.choice-btn:hover {
+    background-color: #0f3460;
+    transform: translateY(-4px);
+}
+
+.choice-btn.selected {
+    border-color: #00ff99;
+}
+
+#result {
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 2;
+}
+
+#outcome {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+#outcome.win  { color: #00ff99; }
+#outcome.lose { color: #e94560; }
+#outcome.draw { color: #f5a623; }
+
+#score {
+    display: flex;
+    gap: 32px;
+    font-size: 1.1rem;
+}
+
+#resetBtn {
+    padding: 10px 24px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #e94560;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+#resetBtn:hover {
+    opacity: 0.8;
+}
+```
+
+### JavaScript
+
+```javascript
+// index.js
+const choices      = ["rock", "paper", "scissors"];
+const choiceBtns   = document.querySelectorAll(".choice-btn");
+const playerChoiceEl  = document.getElementById("playerChoice");
+const computerChoiceEl = document.getElementById("computerChoice");
+const outcomeEl    = document.getElementById("outcome");
+const playerScoreEl   = document.getElementById("playerScore");
+const computerScoreEl = document.getElementById("computerScore");
+const drawScoreEl  = document.getElementById("drawScore");
+const resetBtn     = document.getElementById("resetBtn");
+
+let playerScore   = 0;
+let computerScore = 0;
+let drawScore     = 0;
+
+const wins = {
+    rock:     "scissors",
+    paper:    "rock",
+    scissors: "paper"
+};
+
+function getComputerChoice() {
+    const randomIndex = Math.floor(Math.random() * choices.length);
+    return choices[randomIndex];
+}
+
+function getOutcome(player, computer) {
+    if (player === computer)          return "draw";
+    if (wins[player] === computer)    return "win";
+    return "lose";
+}
+
+function updateScore(outcome) {
+    if (outcome === "win")       playerScore++;
+    else if (outcome === "lose") computerScore++;
+    else                         drawScore++;
+
+    playerScoreEl.textContent   = playerScore;
+    computerScoreEl.textContent = computerScore;
+    drawScoreEl.textContent     = drawScore;
+}
+
+function updateDisplay(player, computer, outcome) {
+    const emoji = { rock: "🪨", paper: "📄", scissors: "✂️" };
+
+    playerChoiceEl.textContent   = `Player: ${emoji[player]} ${player}`;
+    computerChoiceEl.textContent = `Computer: ${emoji[computer]} ${computer}`;
+
+    outcomeEl.classList.remove("win", "lose", "draw");
+    outcomeEl.classList.add(outcome);
+
+    if (outcome === "win")       outcomeEl.textContent = "You Win! 🎉";
+    else if (outcome === "lose") outcomeEl.textContent = "You Lose! 💀";
+    else                         outcomeEl.textContent = "Draw! 🤝";
+}
+
+choiceBtns.forEach(btn => {
+    btn.addEventListener("click", function() {
+        const playerChoice   = btn.dataset.choice;
+        const computerChoice = getComputerChoice();
+        const outcome        = getOutcome(playerChoice, computerChoice);
+
+        // Highlight selected button
+        choiceBtns.forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+
+        updateDisplay(playerChoice, computerChoice, outcome);
+        updateScore(outcome);
+    });
+});
+
+resetBtn.addEventListener("click", function() {
+    playerScore = computerScore = drawScore = 0;
+
+    playerScoreEl.textContent   = 0;
+    computerScoreEl.textContent = 0;
+    drawScoreEl.textContent     = 0;
+
+    playerChoiceEl.textContent   = "Player: —";
+    computerChoiceEl.textContent = "Computer: —";
+    outcomeEl.textContent        = "";
+    outcomeEl.classList.remove("win", "lose", "draw");
+    choiceBtns.forEach(b => b.classList.remove("selected"));
+});
+```
+
+### How it works
+
+**`wins` object:**
+Instead of a long `if/else` chain to check who wins, the logic is stored in an object. `wins[player]` gives the choice that player beats — so checking `wins[player] === computer` is all you need.
+
+```javascript
+wins["rock"]     // "scissors" — rock beats scissors
+wins["paper"]    // "rock"     — paper beats rock
+wins["scissors"] // "paper"    — scissors beats paper
+```
+
+**`data-choice` attribute:**
+Each button carries its value in `data-choice`. One `forEach` loop handles all three buttons — the same pattern used in the calculator.
+
+**`classList` for outcome color:**
+The `#outcome` element gets a class of `"win"`, `"lose"`, or `"draw"` each round. The old class is removed first with `classList.remove("win", "lose", "draw")` before adding the new one — clean and no leftover classes.
+
+**`getComputerChoice()`:**
+Uses `Math.floor(Math.random() * choices.length)` to pick a random index from the `choices` array — the same formula from the Random Number Generator section.
+
+**Score reset:**
+```javascript
+playerScore = computerScore = drawScore = 0;
+```
+Chained assignment — sets all three to `0` in one line.
