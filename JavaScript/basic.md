@@ -5595,3 +5595,154 @@ console.log(liveList.length);   // updated — includes new item
 | `.map()`, `.filter()` | No          | No               | Yes              |
 | Live updates      | No (static)      | Yes (live)       | No               |
 | Convert to array  | `[...list]` or `Array.from(list)` | same | — |
+
+---
+
+## classList
+
+`classList` is a property on every DOM element that gives you a clean way to add, remove, toggle, and check CSS classes without touching the `className` string directly.
+
+---
+
+### The old way vs classList
+
+```javascript
+const el = document.getElementById("box");
+
+// Old way — string manipulation, messy and error-prone
+el.className = "box active highlight";
+el.className = el.className.replace("active", ""); // removing is painful
+
+// classList — clean and readable
+el.classList.add("active");
+el.classList.remove("active");
+```
+
+---
+
+### Methods
+
+#### `add` — add one or more classes
+
+```javascript
+el.classList.add("active");
+el.classList.add("active", "highlight", "visible"); // multiple at once
+```
+
+If the class already exists, it won't be added twice.
+
+#### `remove` — remove one or more classes
+
+```javascript
+el.classList.remove("active");
+el.classList.remove("active", "highlight"); // multiple at once
+```
+
+If the class doesn't exist, no error is thrown.
+
+#### `toggle` — add if absent, remove if present
+
+```javascript
+el.classList.toggle("active"); // off → on → off → on
+```
+
+With a second argument — force add or remove based on a condition:
+
+```javascript
+el.classList.toggle("active", true);  // always adds
+el.classList.toggle("active", false); // always removes
+```
+
+Useful when the condition comes from a variable:
+
+```javascript
+el.classList.toggle("active", isLoggedIn); // adds if true, removes if false
+```
+
+#### `contains` — check if a class exists
+
+```javascript
+el.classList.contains("active"); // true or false
+```
+
+#### `replace` — swap one class for another
+
+```javascript
+el.classList.replace("inactive", "active"); // replaces "inactive" with "active"
+```
+
+Returns `true` if the replacement happened, `false` if the first class wasn't found.
+
+---
+
+### Reading all classes
+
+```javascript
+console.log(el.classList);         // DOMTokenList ["box", "active", "highlight"]
+console.log(el.classList.length);  // 3 — number of classes
+
+// Loop over all classes
+el.classList.forEach(cls => console.log(cls));
+
+// Convert to array
+const classes = [...el.classList];
+```
+
+---
+
+### `className` — the string version
+
+Sometimes you need the full class string at once.
+
+```javascript
+console.log(el.className); // "box active highlight" — space-separated string
+el.className = "box";      // replaces ALL classes at once
+el.className = "";         // removes all classes
+```
+
+Use `classList` for individual class operations. Use `className` only when you want to replace or clear all classes at once.
+
+---
+
+### Practical examples
+
+#### Active nav link
+
+```javascript
+const navLinks = document.querySelectorAll(".nav-link");
+
+navLinks.forEach(link => {
+    link.addEventListener("click", function() {
+        navLinks.forEach(l => l.classList.remove("active")); // remove from all
+        this.classList.add("active"); // add to clicked one
+    });
+});
+```
+
+#### Dark mode toggle
+
+```javascript
+const toggleBtn = document.getElementById("darkModeBtn");
+
+toggleBtn.addEventListener("click", function() {
+    document.body.classList.toggle("dark-mode");
+    toggleBtn.textContent = document.body.classList.contains("dark-mode")
+        ? "Light Mode"
+        : "Dark Mode";
+});
+```
+
+---
+
+### Quick reference
+
+| Method                          | What it does                                     |
+|---------------------------------|--------------------------------------------------|
+| `el.classList.add("x")`         | Add class x                                      |
+| `el.classList.remove("x")`      | Remove class x                                   |
+| `el.classList.toggle("x")`      | Add if absent, remove if present                 |
+| `el.classList.toggle("x", bool)`| Add if true, remove if false                     |
+| `el.classList.contains("x")`    | Returns true if class exists                     |
+| `el.classList.replace("a","b")` | Replace class a with class b                     |
+| `el.classList.length`           | Number of classes                                |
+| `el.className`                  | Full class string — replaces all when set        |
