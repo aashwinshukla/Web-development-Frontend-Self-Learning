@@ -5488,3 +5488,110 @@ toggleBtn.addEventListener("click", function() {
 | `visibility: hidden`            | Yes         | No         | Hiding without shifting layout |
 | `opacity: 0`                    | Yes         | Yes        | Fade effects          |
 | `classList.toggle("hidden")`    | No          | No         | Clean toggle pattern  |
+
+---
+
+## NodeList
+
+A NodeList is a collection of DOM nodes returned by methods like `querySelectorAll`. It looks like an array but it isn't one — it has some array-like behaviour but is missing most array methods.
+
+---
+
+### Getting a NodeList
+
+```javascript
+const items = document.querySelectorAll(".item");
+console.log(items); // NodeList(3) [li, li, li]
+```
+
+---
+
+### Accessing elements
+
+```javascript
+items[0];           // first element — index access works
+items.length;       // number of elements
+```
+
+---
+
+### Looping over a NodeList
+
+```javascript
+const items = document.querySelectorAll("li");
+
+// forEach — works on NodeList directly
+items.forEach(item => console.log(item.textContent));
+
+// for...of — also works
+for (let item of items) {
+    console.log(item.textContent);
+}
+
+// Regular for loop — also works
+for (let i = 0; i < items.length; i++) {
+    console.log(items[i].textContent);
+}
+```
+
+---
+
+### NodeList is NOT an array
+
+Array methods like `.map()`, `.filter()`, `.reduce()` do not work on a NodeList directly.
+
+```javascript
+const items = document.querySelectorAll("li");
+
+items.map(item => item.textContent);    // TypeError — map is not a function
+items.filter(item => item.textContent); // TypeError
+```
+
+To use array methods, convert it to an array first:
+
+```javascript
+// Spread
+const arr = [...items];
+
+// Array.from
+const arr = Array.from(items);
+
+// Now array methods work
+arr.map(item => item.textContent);
+arr.filter(item => item.classList.contains("active"));
+```
+
+---
+
+### Static vs Live
+
+`querySelectorAll` returns a **static** NodeList — it does not update if the DOM changes after the query.
+
+`getElementsByClassName` and `getElementsByTagName` return an **HTMLCollection** which is **live** — it updates automatically when elements are added or removed.
+
+```javascript
+const staticList = document.querySelectorAll(".item");   // static — snapshot
+const liveList   = document.getElementsByClassName("item"); // live — updates
+
+// Add a new element
+const newItem = document.createElement("li");
+newItem.classList.add("item");
+document.querySelector("ul").appendChild(newItem);
+
+console.log(staticList.length); // same as before — doesn't include new item
+console.log(liveList.length);   // updated — includes new item
+```
+
+---
+
+### NodeList vs HTMLCollection vs Array
+
+| Feature           | NodeList         | HTMLCollection   | Array            |
+|-------------------|------------------|------------------|------------------|
+| Returned by       | `querySelectorAll` | `getElementsByClassName`, `getElementsByTagName` | — |
+| Index access      | Yes              | Yes              | Yes              |
+| `.length`         | Yes              | Yes              | Yes              |
+| `.forEach()`      | Yes              | No               | Yes              |
+| `.map()`, `.filter()` | No          | No               | Yes              |
+| Live updates      | No (static)      | Yes (live)       | No               |
+| Convert to array  | `[...list]` or `Array.from(list)` | same | — |
