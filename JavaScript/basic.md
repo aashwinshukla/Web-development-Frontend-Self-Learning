@@ -5218,3 +5218,134 @@ link.addEventListener("click", function(event) {
 | Remove from page            | `el.remove()`                                     |
 | Add event listener          | `el.addEventListener("event", fn)`                |
 | Prevent default             | `event.preventDefault()`                          |
+
+---
+
+## Key Events
+
+Three events fire when a user interacts with the keyboard:
+
+| Event      | Fires when                                      |
+|------------|-------------------------------------------------|
+| `keydown`  | Key is pressed down — fires repeatedly if held  |
+| `keyup`    | Key is released                                 |
+| `keypress` | Deprecated — don't use, use `keydown` instead   |
+
+---
+
+### Basic usage
+
+```javascript
+document.addEventListener("keydown", function(event) {
+    console.log(event.key);  // "a", "Enter", "ArrowUp", " " (space), etc.
+});
+
+document.addEventListener("keyup", function(event) {
+    console.log(event.key + " was released");
+});
+```
+
+Listen on `document` to catch all keypresses regardless of what's focused. Listen on a specific element to only catch keys when that element is focused.
+
+---
+
+### The event object
+
+```javascript
+document.addEventListener("keydown", function(event) {
+    console.log(event.key);      // "a", "A", "Enter", "ArrowLeft"
+    console.log(event.code);     // "KeyA", "Enter", "ArrowLeft" — physical key position
+    console.log(event.repeat);   // true if key is being held down
+});
+```
+
+- `event.key` — the actual character or key name. Affected by Shift (`"a"` vs `"A"`)
+- `event.code` — the physical key on the keyboard, not affected by Shift or layout (`"KeyA"` is always `"KeyA"`)
+- `event.repeat` — `true` when the key is held and the event keeps firing
+
+---
+
+### Modifier keys
+
+```javascript
+document.addEventListener("keydown", function(event) {
+    console.log(event.shiftKey);  // true if Shift is held
+    console.log(event.ctrlKey);   // true if Ctrl is held
+    console.log(event.altKey);    // true if Alt is held
+    console.log(event.metaKey);   // true if Cmd (Mac) or Win key is held
+});
+```
+
+Combining keys:
+
+```javascript
+document.addEventListener("keydown", function(event) {
+    // Ctrl + S
+    if (event.ctrlKey && event.key === "s") {
+        event.preventDefault(); // stop browser save dialog
+        console.log("Save triggered");
+    }
+
+    // Shift + Enter
+    if (event.shiftKey && event.key === "Enter") {
+        console.log("Shift + Enter pressed");
+    }
+});
+```
+
+---
+
+### Common key names
+
+| Key pressed    | `event.key`   |
+|----------------|---------------|
+| Letter a       | `"a"` or `"A"` (with Shift) |
+| Enter          | `"Enter"`     |
+| Space          | `" "`         |
+| Backspace      | `"Backspace"` |
+| Escape         | `"Escape"`    |
+| Arrow keys     | `"ArrowUp"`, `"ArrowDown"`, `"ArrowLeft"`, `"ArrowRight"` |
+| Tab            | `"Tab"`       |
+| Delete         | `"Delete"`    |
+| Function keys  | `"F1"` – `"F12"` |
+
+---
+
+### Practical example — form submit on Enter
+
+```javascript
+const input = document.getElementById("myInput");
+
+input.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        console.log("Submitted:", input.value);
+        input.value = "";
+    }
+});
+```
+
+### Practical example — move a box with arrow keys
+
+```javascript
+const box = document.getElementById("box");
+let x = 0;
+let y = 0;
+
+document.addEventListener("keydown", function(event) {
+    const speed = 10;
+
+    if (event.key === "ArrowUp")    y -= speed;
+    if (event.key === "ArrowDown")  y += speed;
+    if (event.key === "ArrowLeft")  x -= speed;
+    if (event.key === "ArrowRight") x += speed;
+
+    box.style.transform = `translate(${x}px, ${y}px)`;
+});
+```
+
+---
+
+### `keydown` vs `keyup` — which to use
+
+- **`keydown`** — use when you want the action to happen as soon as the key is pressed, or repeatedly while held (movement, shortcuts)
+- **`keyup`** — use when you want the action to happen after the key is fully released (one-shot triggers)
