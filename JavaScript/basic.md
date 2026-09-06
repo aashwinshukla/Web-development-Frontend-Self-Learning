@@ -5994,3 +5994,179 @@ Uses `Math.floor(Math.random() * choices.length)` to pick a random index from th
 playerScore = computerScore = drawScore = 0;
 ```
 Chained assignment — sets all three to `0` in one line.
+
+---
+
+## JSON
+
+JSON (JavaScript Object Notation) is a format for storing and exchanging data as text. It looks like a JavaScript object but it's just a string — which means it can be sent over a network, saved to a file, or stored in localStorage.
+
+```json
+{
+  "name": "Aashwin",
+  "age": 19,
+  "isStudent": true,
+  "skills": ["HTML", "CSS", "JavaScript"],
+  "address": {
+    "city": "Lucknow",
+    "country": "India"
+  }
+}
+```
+
+---
+
+### JSON rules
+
+JSON is stricter than a JavaScript object:
+
+- Keys **must** be in double quotes
+- Strings **must** use double quotes — no single quotes
+- No trailing commas
+- No functions, no `undefined`, no comments
+- Valid value types: string, number, boolean, array, object, `null`
+
+---
+
+### `JSON.stringify` — object to JSON string
+
+Converts a JavaScript object into a JSON string. Used when sending data to a server or saving it.
+
+```javascript
+const person = {
+    name: "Aashwin",
+    age: 19,
+    isStudent: true
+};
+
+const jsonString = JSON.stringify(person);
+console.log(jsonString);
+// '{"name":"Aashwin","age":19,"isStudent":true}'
+
+console.log(typeof jsonString); // "string"
+```
+
+#### Pretty printing
+
+Pass a third argument for indentation — makes it readable.
+
+```javascript
+console.log(JSON.stringify(person, null, 2));
+// {
+//   "name": "Aashwin",
+//   "age": 19,
+//   "isStudent": true
+// }
+```
+
+#### What gets dropped
+
+Functions, `undefined`, and symbols are silently removed.
+
+```javascript
+const obj = {
+    name: "Aashwin",
+    greet: function() {},   // dropped
+    score: undefined,       // dropped
+};
+
+JSON.stringify(obj); // '{"name":"Aashwin"}'
+```
+
+---
+
+### `JSON.parse` — JSON string to object
+
+Converts a JSON string back into a JavaScript object. Used when receiving data from a server.
+
+```javascript
+const jsonString = '{"name":"Aashwin","age":19}';
+
+const person = JSON.parse(jsonString);
+console.log(person.name); // "Aashwin"
+console.log(person.age);  // 19
+
+console.log(typeof person); // "object"
+```
+
+#### Always wrap in try/catch
+
+If the string is invalid JSON, `JSON.parse` throws a `SyntaxError`.
+
+```javascript
+try {
+    const data = JSON.parse("not valid json");
+} catch (error) {
+    console.log("Invalid JSON:", error.message);
+}
+```
+
+---
+
+### JSON with fetch
+
+You've already seen this in the Async section — `response.json()` parses the response body as JSON automatically.
+
+```javascript
+async function getUser() {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users/1");
+    const user = await response.json(); // JSON string → JS object
+    console.log(user.name);
+}
+```
+
+Sending JSON in a POST request:
+
+```javascript
+await fetch("https://api.example.com/users", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: "Aashwin", age: 19 }) // JS object → JSON string
+});
+```
+
+---
+
+### JSON for deep copying objects
+
+`JSON.stringify` + `JSON.parse` together create a full independent copy of an object — mentioned in the Objects section.
+
+```javascript
+const original = { name: "Aashwin", address: { city: "Lucknow" } };
+
+const copy = JSON.parse(JSON.stringify(original));
+
+copy.address.city = "Mumbai";
+console.log(original.address.city); // "Lucknow" — unchanged
+```
+
+Limitation — functions, `undefined`, and `Date` objects don't survive the round trip.
+
+---
+
+### JSON in localStorage
+
+localStorage only stores strings — JSON lets you save objects to it.
+
+```javascript
+const user = { name: "Aashwin", score: 42 };
+
+// Save
+localStorage.setItem("user", JSON.stringify(user));
+
+// Load
+const saved = JSON.parse(localStorage.getItem("user"));
+console.log(saved.name);  // "Aashwin"
+console.log(saved.score); // 42
+```
+
+---
+
+### Quick reference
+
+| Method                      | What it does                              |
+|-----------------------------|-------------------------------------------|
+| `JSON.stringify(obj)`       | JS object → JSON string                   |
+| `JSON.stringify(obj, null, 2)` | JS object → pretty-printed JSON string |
+| `JSON.parse(str)`           | JSON string → JS object                   |
+| `response.json()`           | Parse fetch response body as JSON         |
