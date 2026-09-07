@@ -1,0 +1,27 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 40px;
+    background-color: #1a1a2e;
+}
+
+
+
+#myBtn{
+    
+    font-size: 1.5em;
+    margin: 2px;
+    border: none;
+    border-radius: 25px;
+    background-color: hsl(180, 100%, 50%);
+}
+#myBtn:hover{
+    transition: ease;
+    background-color: hsl(180, 100%, 40%);
+}
+div{
+
+}
