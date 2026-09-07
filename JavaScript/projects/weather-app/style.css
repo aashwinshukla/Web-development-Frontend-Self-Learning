@@ -23,5 +23,14 @@ body {
     background-color: hsl(180, 100%, 40%);
 }
 div{
+    background-color: hsla(111, 79%, 47%, 0.96);
+    width: 300px;
+    margin-top: 50px ;
+    
+}
 
+#display {
+    text-align: center;
+    margin-top: 40px;
+    color: white;
 }
