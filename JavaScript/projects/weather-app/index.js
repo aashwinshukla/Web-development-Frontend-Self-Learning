@@ -1,6 +1,6 @@
 const weatherForm = document.querySelector(".weatherForm");
 const cityInput = document.querySelector(".cityInput");
-const display = document.querySelector(".display");
+const card = document.querySelector(".card");
 const apiKey = "2abbd2c83aaa41bb1ab482abe3d279e0";
 
 weatherForm.addEventListener("submit", event =>{
@@ -12,8 +12,8 @@ weatherForm.addEventListener("submit", event =>{
     if(city){
 
     }else{
-        displayError();
-        
+        displayError("Please Enter a city");
+
     }
 });
 
@@ -32,4 +32,11 @@ function getWeatherEmoji(weatherId){
 
 function displayError(message){
 
+    const errorDisplay = document.createElement("p");
+    errorDisplay.textContent = message;
+    errorDisplay.classList.add("errprDisplay");
+
+    card.textContent = "";
+    card.style.display = "flex";
+    card.appendChild(errorDisplay);
 } 

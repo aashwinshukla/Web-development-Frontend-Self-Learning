@@ -36,7 +36,7 @@ button[type = "submit"]:hover{
 }
 
 
-.display {
+.card {
     text-align: center;
     margin-top: 40px;
     color: hsl(0, 0%, 100%);
