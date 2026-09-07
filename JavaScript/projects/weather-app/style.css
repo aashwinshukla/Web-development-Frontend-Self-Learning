@@ -67,4 +67,23 @@ p{
     margin-bottom: 25px;
 }
 
-.
+.humidity{
+    font-weight: bold;
+    margin-bottom: 24px;
+}
+
+.sky{
+    font-style: italic;
+    font-weight: bold;
+}
+
+.emoji{
+    margin: 0;
+    font-size: 5rem;
+}
+
+.error{
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.756);
+}
