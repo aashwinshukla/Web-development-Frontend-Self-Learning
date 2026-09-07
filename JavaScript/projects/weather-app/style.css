@@ -1,4 +1,5 @@
 body {
+    font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -9,28 +10,61 @@ body {
 }
 
 
+.cityInput{
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid hsla(0%, 0%, 20%, 0.3);
+    border-radius: 1px;
+    margin: 10px;
+    width: 250px;
+}
 
-#myBtn{
-    
-    font-size: 1.5em;
-    margin: 2px;
+button[type = "submit"]{
+    width: 200px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 10px;
     border: none;
     border-radius: 25px;
     background-color: hsl(180, 100%, 50%);
 }
-#myBtn:hover{
+
+button[type = "submit"]:hover{
     transition: ease;
     background-color: hsl(180, 100%, 40%);
 }
-div{
-    background-color: hsla(111, 79%, 47%, 0.96);
-    width: 300px;
-    margin-top: 50px ;
-    
-}
 
-#display {
+
+.display {
     text-align: center;
     margin-top: 40px;
-    color: white;
+    color: hsl(0, 0%, 100%);
+    background: linear-gradient(180deg, hsl(152, 68%, 35%), hsl(217, 91%, 45%));
+    box-shadow: 2px 2px 5px hsla(19, 100%, 50%, 0.603);
+    border-radius: 16px;
+    padding: 32px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+h1{
+    
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+p{
+    font-size: 1.5rem;
+    margin: 5px 0;
+}
+
+.name, .temp{
+    font-size: 2rem;
+    font-weight: bold;
+    color: hsla(0, 0%, 0%, 0.751);
+    margin-bottom: 25px;
+}
+
+.

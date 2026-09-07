@@ -4,20 +4,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculator</title>
+    <title>Weather App</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <input id = "myInput" >
-    <button id = "myBtn"> Check Weather</button>
-
-    <div id = "display">
-        <h1 id = "name">Dallas</h1>
-        <h2 id = "temp">Temperature: 40&deg;C</h2>
-        <h2 id = "humidity">Humidity: 63%</h2>
-        <h2 id = "sky">Clear</h2>
-        <h2 id = "emoji">☀️</h2>
+    <form class = "weatherform">
+        <input type = "text" class = "cityInput" placeholder ="Enter City" >
+        <button type = "submit" onclick = submit()> Check Weather</button>
+    </form>
+    <div class = "display">
+        <h1 class = "name">Dallas</h1>
+        <h2 class = "temp">Temperature: 40&deg;C</h2>
+        <p class = "humidity">Humidity: 63%</p>
+        <p class = "sky">Clear</p>
+        <p id = "emoji">☀️</p>
+        <p class = "error"></p>
         
     </div>
     <script src="index.js"></script>
