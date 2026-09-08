@@ -111,3 +111,122 @@ Each of these builds on what you already know. `useState` is just a variable tha
 React is the industry standard for building modern web UIs. Learning it opens the door to building full applications, landing frontend jobs, and working with the Next.js ecosystem. It is opinionated enough to give you structure but flexible enough to work with almost any backend or design system.
 
 You are in a good position to start. Everything you built in JavaScript — the DOM manipulation, events, fetch, array methods, destructuring, modules — is directly applicable. React does not replace that knowledge, it builds on top of it.
+
+---
+
+## Installation and Setup
+
+### What you need first
+
+Before creating a React project you need **Node.js** installed. Node gives you `npm` (Node Package Manager) which is how you install React and all its dependencies.
+
+Check if you already have it:
+```
+node -v
+npm -v
+```
+If both return version numbers you're good. If not, download Node from [nodejs.org](https://nodejs.org) — get the LTS version.
+
+---
+
+### Creating a React project with Vite
+
+There are a few ways to set up React. The current standard is **Vite** — it's fast, lightweight, and what most developers use today. (You may see older tutorials using `create-react-app` — that tool is outdated and no longer recommended.)
+
+In your terminal, navigate to wherever you want the project to live, then run:
+
+```
+npm create vite@latest
+```
+
+It will ask you a few questions:
+1. **Project name** — type whatever you want, e.g. `my-app`
+2. **Framework** — select `React`
+3. **Variant** — select `JavaScript` (not TypeScript, for now)
+
+Then run these three commands:
+
+```
+cd my-app
+npm install
+npm run dev
+```
+
+- `cd my-app` — move into the project folder
+- `npm install` — downloads all the dependencies React needs
+- `npm run dev` — starts the development server
+
+Open your browser and go to `http://localhost:5173` — you'll see the default React page. Your app is running.
+
+---
+
+### What just got created
+
+Opening the project folder you'll see this structure:
+
+```
+my-app/
+├── node_modules/       — all installed packages (never touch this)
+├── public/             — static files like favicon
+├── src/                — your actual code lives here
+│   ├── assets/
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── index.html
+├── package.json        — project info and list of dependencies
+└── vite.config.js      — Vite configuration
+```
+
+The two files you'll work in most:
+
+- **`src/App.jsx`** — the root component of your app, this is where you start writing
+- **`src/main.jsx`** — the entry point that mounts your app onto the HTML page, you rarely touch this
+
+---
+
+### The `.jsx` extension
+
+You'll notice files use `.jsx` instead of `.js`. JSX is the syntax React uses — it lets you write HTML-like code inside JavaScript. The `.jsx` extension tells the build tool to handle that syntax. Some projects use `.js` for everything and it still works, but `.jsx` makes the intent clear.
+
+---
+
+### Cleaning up the default files
+
+The default Vite + React setup comes with placeholder content you don't need. Before starting your own project, clean `App.jsx` down to this:
+
+```jsx
+function App() {
+  return (
+    <div>
+      <h1>Hello World</h1>
+    </div>
+  );
+}
+
+export default App;
+```
+
+And clear out `App.css` and `index.css` if you want a blank slate.
+
+---
+
+### VS Code extensions worth installing
+
+- **ES7+ React/Redux/React-Native snippets** — shortcut commands to generate component boilerplate fast
+- **Prettier** — auto-formats your code on save
+- **ESLint** — catches errors and bad patterns as you type
+
+---
+
+### The development workflow
+
+From this point on, every time you want to work on the project:
+
+1. Open the project folder in VS Code
+2. Open the terminal and run `npm run dev`
+3. Go to `http://localhost:5173` in your browser
+4. Edit files in `src/` — the browser updates automatically on every save
+
+That's it. No Live Server needed — Vite handles hot reloading on its own.
