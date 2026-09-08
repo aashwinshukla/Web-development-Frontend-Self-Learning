@@ -127,7 +127,7 @@ if (true) {
 console.log(x); // "leaks out" — no error
 ```
 
-`var` is also hoisted — available before its declaration line (as `undefined`). Never use `var`. Use `let` and `const`.
+`var` is also hoisted — available before its declaration line (as `undefined`). `var` is outdated — `let` and `const` are the standard now.
 
 ### Scope chain
 
@@ -297,7 +297,7 @@ let person = {
 person.greet(); // Hi, I'm Aashwin
 ```
 
-`this` refers to the object the method belongs to. Don't use arrow functions for methods that use `this`.
+`this` refers to the object the method belongs to. Arrow functions don't have their own `this` so they don't work correctly as object methods.
 
 ### Looping
 
@@ -469,7 +469,7 @@ let diff = future.getTime() - now.getTime(); // milliseconds
 let days = Math.floor(diff / (1000 * 60 * 60 * 24));
 ```
 
-Always use `.getTime()` for equality — never `===` directly on Date objects.
+`.getTime()` should be used for equality checks — `===` directly on Date objects checks reference, not value.
 
 ---
 

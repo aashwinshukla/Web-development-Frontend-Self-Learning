@@ -6,7 +6,7 @@ A row of links used to navigate between pages — common on blogs, search result
 
 ### HTML
 ```html
-<nav aria-label="Pagination">
+<nav class="pagination-nav">
   <ul class="pagination">
     <li><a href="#">&laquo;</a></li>
     <li><a href="#" class="active">1</a></li>
@@ -52,7 +52,6 @@ A row of links used to navigate between pages — common on blogs, search result
 
 - `&laquo;` and `&raquo;` render as « and » — used as previous/next arrows.
 - `.active` marks the current page.
-- `<nav>` with `aria-label` makes it readable by screen readers.
 
 ---
 
@@ -471,13 +470,4 @@ i {
   <li><i class="fa-solid fa-check" style="color: green;"></i> Feature one</li>
   <li><i class="fa-solid fa-check" style="color: green;"></i> Feature two</li>
 </ul>
-```
-
-### Accessibility
-```html
-<!-- Decorative icon — hide from screen readers -->
-<i class="fa-solid fa-house" aria-hidden="true"></i>
-
-<!-- Icon with meaning — add a label -->
-<i class="fa-solid fa-house" aria-label="Home"></i>
 ```

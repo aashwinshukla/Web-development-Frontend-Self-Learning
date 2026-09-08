@@ -236,7 +236,7 @@ Labels describe what an input is for. Clicking the label focuses the input — b
 </label>
 ```
 
-Always use labels — screen readers depend on them.
+Always add labels — screen readers depend on them.
 
 ### Textarea
 

@@ -58,6 +58,8 @@ MathHelper.add(5, 3); // 8
 
 ### Private fields
 
+Properties prefixed with `#` are private — only accessible from inside the class.
+
 ```javascript
 class BankAccount {
     #balance = 0;
@@ -69,7 +71,7 @@ class BankAccount {
 let acc = new BankAccount();
 acc.deposit(500);
 acc.getBalance(); // 500
-acc.#balance;     // SyntaxError — private
+acc.#balance;     // SyntaxError — can't access from outside
 ```
 
 ### Inheritance
@@ -114,12 +116,14 @@ d instanceof Cat;    // false
 
 ### Prototypes
 
-Every object has a hidden prototype chain. Methods defined in a class are stored on the prototype — shared across all instances, not copied to each.
+Every object in JavaScript has a hidden link to a prototype object. When a property or method is accessed, JS looks at the object first, then walks up the prototype chain until it finds it.
+
+Methods defined in a class are stored on the prototype — shared across all instances, not copied to each one.
 
 ```javascript
 let p = new Person("Aashwin", 19);
 p.hasOwnProperty("name");   // true — own property
-p.hasOwnProperty("greet");  // false — on prototype
+p.hasOwnProperty("greet");  // false — on the prototype
 ```
 
 ### Method chaining
@@ -274,19 +278,13 @@ Faster than sequential — both requests fire at the same time.
 
 ### Event loop
 
-1. Sync code runs first (call stack)
-2. Async tasks handed to browser
-3. Callbacks go to task queue when done
-4. Event loop picks from queue when stack is empty
-
-Promises go to the **microtask queue** — higher priority than `setTimeout`.
+JavaScript is single-threaded. Async tasks are handed off to the browser. When they finish, their callbacks go into a queue and run when the main code is done.
 
 ```javascript
 console.log("1");
 setTimeout(() => console.log("2"), 0);
-Promise.resolve().then(() => console.log("3"));
-console.log("4");
-// Output: 1, 4, 3, 2
+console.log("3");
+// Output: 1, 3, 2 — setTimeout runs after sync code even with 0ms delay
 ```
 
 | Concept         | Syntax                                      |
@@ -366,20 +364,12 @@ class ValidationError extends Error {
     }
 }
 
-throw new ValidationError("Email invalid", "email");
-```
-
-### Re-throwing
-
-```javascript
 try {
-    JSON.parse(data);
+    throw new ValidationError("Email invalid", "email");
 } catch (error) {
-    if (error instanceof SyntaxError) {
-        console.log("Bad JSON");
-    } else {
-        throw error; // not our problem — pass it up
-    }
+    console.log(error.name);    // "ValidationError"
+    console.log(error.field);   // "email"
+    console.log(error.message); // "Email invalid"
 }
 ```
 

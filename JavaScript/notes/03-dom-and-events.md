@@ -31,7 +31,7 @@ document.querySelector("ul > li:first-child")
 ```javascript
 el.textContent           // get plain text
 el.textContent = "Hello" // set plain text
-el.innerHTML             // get/set HTML — avoid with user content (XSS risk)
+el.innerHTML             // get/set HTML — be careful with user-provided content
 input.value              // get/set input value
 ```
 

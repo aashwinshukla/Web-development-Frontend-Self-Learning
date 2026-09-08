@@ -263,7 +263,7 @@ if (age >= 18) {
 
 | Operator | Meaning               |
 |----------|-----------------------|
-| `===`    | Strict equal (use this) |
+| `===`    | Strict equal — preferred |
 | `!==`    | Strict not equal      |
 | `==`     | Loose equal (avoid)   |
 | `>`      | Greater than          |
@@ -271,7 +271,7 @@ if (age >= 18) {
 | `>=`     | Greater than or equal |
 | `<=`     | Less than or equal    |
 
-Always use `===` — `==` does type coercion and produces surprising results.
+`===` checks both value and type — `==` does type coercion which produces surprising results.
 
 ### Logical operators
 
