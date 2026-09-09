@@ -303,3 +303,70 @@ src/
 ```
 
 This keeps code organized — one component per file, imported where needed.
+
+---
+
+## JavaScript in JSX
+
+Variables and expressions can be embedded inside JSX using `{}`. Anything inside the curly braces is treated as JavaScript.
+
+```jsx
+function Food() {
+    const food1 = "Orange";
+    const food2 = "Banana";
+
+    return (
+        <ul>
+            <li>Apple</li>
+            <li>{food1}</li>
+            <li>{food2.toUpperCase()}</li>
+        </ul>
+    );
+}
+```
+
+- `{food1}` — renders the value of the variable
+- `{food2.toUpperCase()}` — any JavaScript expression works inside `{}`, including method calls, arithmetic, ternary operators
+- Plain text like `Apple` renders as-is, no curly braces needed
+
+---
+
+## Fragments
+
+A component can only return one root element. When multiple elements are needed without adding an extra `<div>` to the page, use a **fragment** — empty angle brackets `<>`.
+
+```jsx
+function App() {
+    return (
+        <>
+            <Header />
+            <Food />
+            <Footer />
+        </>
+    );
+}
+```
+
+`<>` and `</>` group elements together without adding any real HTML element to the page.
+
+---
+
+## Reusing Components
+
+A component can be used as many times as needed — just add the tag multiple times.
+
+```jsx
+function App() {
+    return (
+        <>
+            <Header />
+            <Food />
+            <Food />
+            <Food />
+            <Footer />
+        </>
+    );
+}
+```
+
+Each `<Food />` renders its own independent copy. This is one of the core advantages of components — write once, use anywhere, as many times as needed.
