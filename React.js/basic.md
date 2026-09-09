@@ -228,3 +228,6 @@ From this point on, every time you want to work on the project:
 4. Edit files in `src/` — the browser updates automatically on every save
 
 That's it. No Live Server needed — Vite handles hot reloading on its own.
+
+
+
