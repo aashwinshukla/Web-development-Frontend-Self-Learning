@@ -438,3 +438,92 @@ function Card(props) {
 - Each prop is accessed with `props.propName`
 
 Props make components dynamic and reusable — same component, different data each time.
+
+---
+
+## Three Ways to Style in React
+
+### 1. Global CSS — `index.css`
+
+Write CSS in `index.css` and it applies everywhere. Good for base styles, resets, and shared classes.
+
+```css
+/* index.css */
+.card {
+  border-radius: 10px;
+  padding: 20px;
+}
+```
+
+```jsx
+<div className="card">
+```
+
+---
+
+### 2. Inline Styles
+
+Pass a JavaScript object to the `style` attribute. CSS property names must be **camelCase** — this is a common mistake.
+
+```jsx
+function Button() {
+    const styles = {
+        backgroundColor: "rgb(248, 15, 252)",  // camelCase — not background-color
+        color: "white",
+        padding: "10px 20px",
+        borderRadius: "5px",
+        border: "none",
+        cursor: "pointer",
+    }
+
+    return (
+        <button style={styles}>Click</button>
+    );
+}
+```
+
+- `style` takes a JS object, not a string — so it's `style={styles}` with double curly braces when written inline: `style={{ color: "red" }}`
+- All hyphenated CSS properties become camelCase — `background-color` → `backgroundColor`, `border-radius` → `borderRadius`
+- Values are strings — `"10px"`, `"white"`, `"pointer"`
+
+---
+
+### 3. CSS Modules
+
+A `.module.css` file scopes styles to the component that imports it — class names won't clash with other components even if they have the same name.
+
+```css
+/* Button.module.css */
+.button {
+    background-color: rgb(252, 15, 15);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+```
+
+```jsx
+import styles from './Button.module.css'
+
+function Button() {
+    return (
+        <button className={styles.button}>Click</button>
+    );
+}
+```
+
+- Import the module as `styles` (or any name)
+- Access classes with `styles.className`
+- Behind the scenes, React generates a unique class name so it never conflicts with other components
+
+---
+
+### Which to use
+
+| Method | Scope | Best for |
+|---|---|---|
+| Global CSS | Whole app | Base styles, shared classes |
+| Inline styles | Single element | Dynamic styles based on JS values |
+| CSS Modules | Single component | Component-specific styles, avoiding clashes |
