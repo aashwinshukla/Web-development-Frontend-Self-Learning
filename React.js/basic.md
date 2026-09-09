@@ -370,3 +370,71 @@ function App() {
 ```
 
 Each `<Food />` renders its own independent copy. This is one of the core advantages of components — write once, use anywhere, as many times as needed.
+
+---
+
+## Styling in React
+
+### className
+
+In JSX, `class` is replaced with `className` — `class` is a reserved word in JavaScript.
+
+```jsx
+<div className="card">
+```
+
+CSS is written normally in `.css` files and imported where needed. `index.css` is the global stylesheet — styles defined there apply across the whole app.
+
+---
+
+## Importing Images and Assets
+
+Images and other assets are imported at the top of the file just like components.
+
+```jsx
+import profilePic from './assets/vite.svg'
+
+function Card() {
+    return (
+        <img src={profilePic} alt="profile picture" />
+    );
+}
+```
+
+- The import gives the image a variable name
+- That variable is used inside `{}` as the `src` value
+- This works for SVGs, PNGs, JPGs, and other file types
+
+---
+
+## Props — Passing Data into Components
+
+Right now the `Card` component is hardcoded — every `<Card />` shows the same name and text. **Props** (short for properties) let you pass different data into each instance of a component.
+
+```jsx
+// Passing props
+function App() {
+    return (
+        <>
+            <Card name="Aashwin Shukla" bio="Learning Frontend, and Playing Games" />
+            <Card name="Alice" bio="Designer" />
+        </>
+    );
+}
+
+// Receiving props
+function Card(props) {
+    return (
+        <div className="card">
+            <h2 className="card-title">{props.name}</h2>
+            <p className="card-text">{props.bio}</p>
+        </div>
+    );
+}
+```
+
+- Props are passed like HTML attributes on the component tag
+- The component receives them as a `props` object
+- Each prop is accessed with `props.propName`
+
+Props make components dynamic and reusable — same component, different data each time.
