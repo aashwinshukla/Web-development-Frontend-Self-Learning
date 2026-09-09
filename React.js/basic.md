@@ -231,3 +231,75 @@ That's it. No Live Server needed — Vite handles hot reloading on its own.
 
 
 
+
+---
+
+## Components
+
+A component is a function that returns JSX — the HTML-like syntax React uses. Every piece of UI is a component.
+
+```jsx
+function Header() {
+    return (
+        <header>
+            <h1>My website</h1>
+        </header>
+    );
+}
+
+export default Header
+```
+
+- The function name starts with a capital letter — this is required. React uses this to tell the difference between a custom component and a plain HTML tag.
+- The `return` wraps the JSX in parentheses when it spans multiple lines.
+- `export default` makes the component available to import in other files.
+
+---
+
+## JSX
+
+JSX looks like HTML but it runs inside JavaScript. A few differences from regular HTML:
+
+- Tags must be properly closed — `<hr />` not `<hr>`
+- `class` becomes `className` in JSX
+- Attributes use camelCase — `onClick`, `onChange`, not `onclick`, `onchange`
+- A component can only return one root element — wrap multiple elements in a single parent tag
+
+---
+
+## Importing and Using Components
+
+Components are imported and used like custom HTML tags.
+
+```jsx
+// App.jsx
+import Header from './Header.jsx'
+
+function App() {
+    return (
+        <Header />
+    );
+}
+
+export default App
+```
+
+- `import Header from './Header.jsx'` — pulls in the Header component from its file
+- `<Header />` — uses it as a self-closing tag
+- `App` is the root component — everything on the page goes inside it
+- `main.jsx` mounts `App` onto the HTML page — this runs automatically, rarely touched
+
+---
+
+## File Structure Pattern
+
+Each component lives in its own `.jsx` file inside `src/`.
+
+```
+src/
+├── App.jsx       — root component, imports everything else
+├── Header.jsx    — header component
+└── main.jsx      — entry point, mounts App to the page
+```
+
+This keeps code organized — one component per file, imported where needed.
