@@ -587,3 +587,46 @@ Student.propTypes = {
 - Defined after the component function
 - Only warns in development — doesn't break anything in production
 - `defaultProps` was the old way to set default values but is deprecated in React 19 — use default parameter values instead
+
+---
+
+## Conditional Rendering
+
+Components can render different JSX based on a condition — using a ternary operator or `&&`.
+
+```jsx
+function UserGreeting(props) {
+    const welcomeMsg = <h2>Welcome {props.username}</h2>;
+    const loginMsg   = <h2>Please log in to continue</h2>;
+
+    return (props.isLoggedIn ? welcomeMsg : loginMsg);
+}
+```
+
+- JSX can be stored in a variable and returned just like any value
+- The ternary `condition ? a : b` picks which JSX to render
+- If `isLoggedIn` is true → shows welcome message, otherwise → shows login message
+
+### Using `&&`
+
+When there's only something to show in one case and nothing in the other:
+
+```jsx
+return (props.isLoggedIn && <h2>Welcome {props.username}</h2>);
+```
+
+If the condition is false, nothing renders.
+
+---
+
+## Important — defaults only apply when a prop is not passed at all
+
+```jsx
+// username defaults to "Guest" — prop not passed
+<UserGreeting isLoggedIn={true} />
+
+// username is "" — prop WAS passed, default does NOT apply
+<UserGreeting isLoggedIn={true} username="" />
+```
+
+Passing an empty string is still passing a value. The default only kicks in when the prop is completely absent.
