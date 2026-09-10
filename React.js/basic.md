@@ -630,3 +630,69 @@ If the condition is false, nothing renders.
 ```
 
 Passing an empty string is still passing a value. The default only kicks in when the prop is completely absent.
+
+---
+
+## Rendering Lists
+
+Arrays of data are rendered using `.map()` — each item becomes a JSX element.
+
+```jsx
+const fruits = [
+    { id: 1, name: "apple",     calories: 95  },
+    { id: 2, name: "orange",    calories: 45  },
+    { id: 3, name: "banana",    calories: 105 },
+    { id: 4, name: "coconut",   calories: 159 },
+    { id: 5, name: "pineapple", calories: 37  }
+];
+
+const listItems = fruits.map(fruit =>
+    <li key={fruit.id}>
+        {fruit.name}: <b>{fruit.calories}</b>
+    </li>
+);
+
+return <ol>{listItems}</ol>;
+```
+
+### The `key` prop
+
+Every element in a mapped list needs a `key` — a unique identifier React uses to track which items changed. Use the item's `id` if it has one, never the array index if the list can change.
+
+```jsx
+<li key={fruit.id}>
+```
+
+Without `key`, React throws a warning and list updates can behave incorrectly.
+
+### Sorting before rendering
+
+Sort the array before mapping — same `.sort()` from JavaScript:
+
+```jsx
+// Alphabetical
+fruits.sort((a, b) => a.name.localeCompare(b.name));
+
+// By calories ascending
+fruits.sort((a, b) => a.calories - b.calories);
+
+// By calories descending
+fruits.sort((a, b) => b.calories - a.calories);
+```
+
+### Filtering before rendering
+
+```jsx
+const lowCalFruits  = fruits.filter(fruit => fruit.calories < 100);
+const highCalFruits = fruits.filter(fruit => fruit.calories >= 100);
+
+const lowCalItems = lowCalFruits.map(fruit =>
+    <li key={fruit.id}>{fruit.name}: <b>{fruit.calories}</b></li>
+);
+```
+
+Filter creates a new array, then map turns it into JSX. Both are standard JS array methods — React doesn't add anything special here.
+
+### `&nbsp;`
+
+`&nbsp;` is an HTML entity for a non-breaking space — adds a small gap between the name and the calorie number without using CSS margin.
