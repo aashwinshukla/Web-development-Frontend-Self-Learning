@@ -696,3 +696,88 @@ Filter creates a new array, then map turns it into JSX. Both are standard JS arr
 ### `&nbsp;`
 
 `&nbsp;` is an HTML entity for a non-breaking space — adds a small gap between the name and the calorie number without using CSS margin.
+
+---
+
+## Passing Arrays as Props
+
+Arrays of objects can be passed as props and rendered inside the component.
+
+```jsx
+// App.jsx
+const fruits = [
+    { id: 1, name: "apple",     calories: 95  },
+    { id: 2, name: "orange",    calories: 45  },
+    { id: 3, name: "banana",    calories: 105 },
+];
+
+const vegetables = [
+    { id: 6, name: "potato",   calories: 110 },
+    { id: 7, name: "celery",   calories: 15  },
+];
+
+return (
+    <>
+        <List items={fruits}      category="Fruits" />
+        <List items={vegetables}  category="Vegetables" />
+    </>
+);
+```
+
+```jsx
+// List.jsx
+function List({ items = [], category = "Category" }) {
+
+    const listItems = items.map(item =>
+        <li key={item.id}>
+            {item.name}: &nbsp; <b>{item.calories}</b>
+        </li>
+    );
+
+    return (
+        <>
+            <h3>{category}</h3>
+            <ol>{listItems}</ol>
+        </>
+    );
+}
+```
+
+The same `List` component renders both fruits and vegetables — different data, same structure.
+
+---
+
+### PropTypes.shape
+
+When a prop is an array of objects, `PropTypes.arrayOf` and `PropTypes.shape` describe the expected structure:
+
+```jsx
+List.propTypes = {
+    category: PropTypes.string,
+    items: PropTypes.arrayOf(PropTypes.shape({
+        id:       PropTypes.number,
+        name:     PropTypes.string,
+        calories: PropTypes.number,
+    }))
+}
+```
+
+- `arrayOf` — the prop is an array
+- `shape({})` — each item in the array should have this shape
+- Uses `{}` with `:` — it's a regular object, not `=`
+
+---
+
+### Conditional rendering in App
+
+Two patterns for conditionally showing a component:
+
+```jsx
+// Ternary — show List or null
+{fruits.length > 0 ? <List items={fruits} category="Fruits" /> : null}
+
+// && — show only if true, nothing otherwise
+{vegetables.length > 0 && <List items={vegetables} category="Vegetables" />}
+```
+
+Both do the same thing here. `&&` is shorter when there's nothing to show in the false case.
