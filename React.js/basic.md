@@ -527,3 +527,63 @@ function Button() {
 | Global CSS | Whole app | Base styles, shared classes |
 | Inline styles | Single element | Dynamic styles based on JS values |
 | CSS Modules | Single component | Component-specific styles, avoiding clashes |
+
+---
+
+## Props
+
+Props (short for properties) let you pass different data into each instance of a component — making it dynamic and reusable.
+
+```jsx
+// Passing props
+function App() {
+    return (
+        <>
+            <Student name="Aashwin" age={19} isStudent={true} />
+            <Student name="Mike" age={25} isStudent={false} />
+            <Student />
+        </>
+    );
+}
+```
+
+```jsx
+// Receiving props — destructured directly in the parameter
+function Student({ name = "Guest", age = 0, isStudent = false }) {
+    return (
+        <div className="student">
+            <p>Name: {name}</p>
+            <p>Age: {age}</p>
+            <p>Student: {isStudent ? "Yes" : "No"}</p>
+        </div>
+    );
+}
+```
+
+- Props are passed like HTML attributes on the component tag
+- Strings use quotes — `name="Aashwin"`
+- Everything else uses `{}` — numbers, booleans, variables: `age={19}`, `isStudent={true}`
+- Destructuring in the parameter is the clean modern way — `{ name, age }` instead of `props.name`, `props.age`
+- Default values are set directly in the destructuring — `{ name = "Guest" }`. If no prop is passed, the default is used
+- `<Student />` with no props renders with all defaults
+
+---
+
+## PropTypes
+
+PropTypes validate the type of each prop — if the wrong type is passed, a warning appears in the console.
+
+```jsx
+import PropTypes from 'prop-types'
+
+Student.propTypes = {
+    name: PropTypes.string,
+    age: PropTypes.number,
+    isStudent: PropTypes.bool,
+}
+```
+
+- Install with `npm install prop-types`
+- Defined after the component function
+- Only warns in development — doesn't break anything in production
+- `defaultProps` was the old way to set default values but is deprecated in React 19 — use default parameter values instead
