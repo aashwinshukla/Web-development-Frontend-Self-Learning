@@ -881,3 +881,73 @@ function ProfilePicture() {
 - `e.target` — the element that was clicked, in this case the `<img>`
 - `e.target.style.display = "none"` — hides the image on click
 - Uses `=` not `-` — common typo that causes silent bugs since `-` is valid JS (subtraction)
+
+---
+
+## useState — State Hook
+
+State is data that belongs to a component and can change over time. When state changes, React automatically re-renders the component to reflect the new value.
+
+```jsx
+import React, { useState } from 'react'
+```
+
+### Declaring state
+
+```jsx
+const [name, setName] = useState("Guest");
+const [age, setAge] = useState(0);
+const [isEmployed, setIsEmployed] = useState(false);
+```
+
+- `useState(initialValue)` — sets the starting value
+- Returns an array of two things — the current value and a function to update it
+- Destructured into `[value, setValue]` — name them whatever makes sense
+- Convention is `value` and `setValue`
+
+### Updating state
+
+```jsx
+const updateName = () => {
+    setName("Aashwin");
+}
+
+const updateAge = () => {
+    setAge(age + 1);
+}
+
+const updateIsEmployed = () => {
+    setIsEmployed(!isEmployed);
+}
+```
+
+- Always use the setter function — never modify the value directly
+- React detects the change and re-renders the component
+- For values based on the previous state, use the current value in the expression — `age + 1`, `!isEmployed`
+
+### Using state in JSX
+
+```jsx
+return (
+    <div>
+        <p>Name: {name}</p>
+        <button onClick={updateName}>Set name</button>
+
+        <p>Age: {age}</p>
+        <button onClick={updateAge}>Increase age</button>
+
+        <p>Employment Status: {isEmployed ? "Employed" : "Not Employed"}</p>
+        <button onClick={updateIsEmployed}>Change Status</button>
+    </div>
+);
+```
+
+State variables are used in JSX just like regular variables inside `{}`. Every time a setter is called, the component re-renders and the new value is displayed.
+
+### Why not just use a regular variable?
+
+```jsx
+let name = "Guest"; // changing this does nothing — React won't re-render
+```
+
+Regular variables don't trigger a re-render. `useState` tells React to watch the value and update the UI when it changes.
