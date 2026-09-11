@@ -824,3 +824,60 @@ function Button() {
 | `onMouseEnter` | Mouse enters element |
 | `onMouseLeave` | Mouse leaves element |
 | `onKeyDown` | Key is pressed |
+
+---
+
+## The Event Object
+
+Every event handler automatically receives an **event object** — it contains details about what happened.
+
+```jsx
+const handleClick = (e) => console.log(e);
+
+return <button onClick={(e) => handleClick(e)}>Click me</button>;
+```
+
+The event object has useful properties:
+
+```jsx
+e.target           // the element that triggered the event
+e.target.textContent  // the text inside that element
+e.target.value     // the value of an input
+e.type             // "click", "change", etc.
+```
+
+### Directly modifying the element via the event object
+
+```jsx
+const handleClick = (e) => e.target.textContent = "OUCH!";
+
+return <button onDoubleClick={(e) => handleClick(e)}>Click me</button>;
+```
+
+- `e.target` is the button that was clicked
+- `.textContent` changes what the button displays
+- `onDoubleClick` fires only on a double click
+
+### Note on direct DOM manipulation
+
+Changing `e.target.textContent` directly works but is not the React way — React prefers updating **state** to change what's displayed, which then re-renders the component. Direct DOM manipulation bypasses React's control. State is covered next.
+
+---
+
+## Manipulating Elements via Events
+
+The event object can be used to directly change an element's style when it's interacted with.
+
+```jsx
+function ProfilePicture() {
+    const imageUrl = './src/assets/vite.svg';
+
+    const handleClick = (e) => e.target.style.display = "none";
+
+    return <img onClick={(e) => handleClick(e)} src={imageUrl} />;
+}
+```
+
+- `e.target` — the element that was clicked, in this case the `<img>`
+- `e.target.style.display = "none"` — hides the image on click
+- Uses `=` not `-` — common typo that causes silent bugs since `-` is valid JS (subtraction)
