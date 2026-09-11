@@ -951,3 +951,35 @@ let name = "Guest"; // changing this does nothing — React won't re-render
 ```
 
 Regular variables don't trigger a re-render. `useState` tells React to watch the value and update the UI when it changes.
+
+---
+
+## Counter — useState Practice
+
+A counter built with `useState` — increment, decrement, and reset.
+
+```jsx
+import React, { useState } from 'react'
+
+function Counter() {
+    const [count, setCount] = useState(0);
+
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
+    const reset     = () => setCount(0);
+
+    return (
+        <div className="counter-container">
+            <p className="count-display">{count}</p>
+            <button className="dec" onClick={decrement}>Decrease</button>
+            <button className="re"  onClick={reset}>Reset</button>
+            <button className="inc" onClick={increment}>Increase</button>
+        </div>
+    );
+}
+```
+
+- One `useState` manages the entire counter
+- Each button has its own handler — `increment`, `decrement`, `reset`
+- `count` is read in JSX, `setCount` updates it
+- CSS classes applied via `className` for styling each button differently
