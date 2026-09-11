@@ -781,3 +781,46 @@ Two patterns for conditionally showing a component:
 ```
 
 Both do the same thing here. `&&` is shorter when there's nothing to show in the false case.
+
+---
+
+## Event Handling
+
+Events in React work the same as in JavaScript but with camelCase names and JSX syntax.
+
+```jsx
+function Button() {
+    const handleClick = () => console.log("OUCH!");
+
+    return <button onClick={handleClick}>Click me</button>;
+}
+```
+
+- `onClick` — camelCase, not `onclick`
+- `{handleClick}` — pass the function reference, no `()`. Adding `()` would call it immediately on render, not on click.
+
+### Passing arguments to event handlers
+
+If the handler needs arguments, wrap it in an arrow function:
+
+```jsx
+function Button() {
+    const handleClick = (name) => console.log(`${name} stop clicking me`);
+
+    return <button onClick={() => handleClick("Aashwin")}>Click me</button>;
+}
+```
+
+- `onClick={() => handleClick("Aashwin")}` — the arrow function calls the handler with the argument when clicked
+- Without the wrapper, `handleClick("Aashwin")` would run immediately on render
+
+### Common events
+
+| Event | Fires when |
+|---|---|
+| `onClick` | Element is clicked |
+| `onChange` | Input value changes |
+| `onSubmit` | Form is submitted |
+| `onMouseEnter` | Mouse enters element |
+| `onMouseLeave` | Mouse leaves element |
+| `onKeyDown` | Key is pressed |
