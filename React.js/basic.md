@@ -1206,3 +1206,67 @@ That would replace the entire object with just `{ year: "..." }` — `make` and 
 ```
 
 Each input is controlled by its corresponding property in the state object. Changing one input only updates that property — the others stay the same.
+
+---
+
+## Updating Arrays in State
+
+When state is an array, use spread to add items and `filter` to remove them — never mutate the array directly.
+
+```jsx
+const [foods, setFoods] = useState(["Apple", "Orange", "Banana"]);
+```
+
+### Adding an item
+
+```jsx
+function handleAddFood() {
+    const newFood = document.getElementById("foodInput").value;
+    document.getElementById("foodInput").value = "";
+
+    setFoods(f => [...f, newFood]);
+}
+```
+
+- `[...f, newFood]` — spreads the existing array and appends the new item at the end
+- The input is cleared manually via `document.getElementById` — this works but the React way is a controlled input with `useState`
+
+### Removing an item
+
+```jsx
+function handleRemoveFood(index) {
+    setFoods(foods.filter((_, i) => i !== index));
+}
+```
+
+- `filter` returns a new array excluding the item at the clicked index
+- `_` is the item value — ignored here, only the index `i` is needed
+- `i !== index` — keeps everything except the clicked item
+
+### Rendering with index as key
+
+```jsx
+{foods.map((food, index) =>
+    <li key={index} onClick={() => handleRemoveFood(index)}>
+        {food}
+    </li>
+)}
+```
+
+- `map` receives both the value and the index — `(food, index)`
+- `key={index}` — using index as key works here since items are just strings with no id
+- `onClick={() => handleRemoveFood(index)}` — arrow function wraps the call so the index can be passed as an argument
+
+### Why not mutate directly
+
+```jsx
+// Wrong — mutating state directly, React won't detect the change
+foods.push("Mango");
+foods.splice(1, 1);
+
+// Correct — always return a new array
+setFoods(f => [...f, "Mango"]);
+setFoods(foods.filter((_, i) => i !== index));
+```
+
+React compares the old and new state — if it's the same array reference, no re-render happens. Always create a new array.
