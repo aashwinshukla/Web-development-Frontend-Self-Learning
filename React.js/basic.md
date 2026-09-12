@@ -983,3 +983,76 @@ function Counter() {
 - Each button has its own handler — `increment`, `decrement`, `reset`
 - `count` is read in JSX, `setCount` updates it
 - CSS classes applied via `className` for styling each button differently
+
+---
+
+## Controlled Components — Forms with useState
+
+In React, form inputs are controlled by state. The input's `value` is tied to a state variable, and every keystroke updates that state via `onChange`.
+
+```jsx
+const [name, setName] = useState("Guest");
+
+function handleNameChange(event) {
+    setName(event.target.value);
+}
+
+<input value={name} onChange={handleNameChange} />
+<p>Name: {name}</p>
+```
+
+- `value={name}` — the input always shows what's in state
+- `onChange` — fires on every keystroke, updates state with `event.target.value`
+- The displayed `<p>` updates in real time as you type
+
+### Text input
+```jsx
+const [name, setName] = useState("Guest");
+<input value={name} onChange={e => setName(e.target.value)} />
+```
+
+### Number input
+```jsx
+const [quantity, setQuantity] = useState(1);
+<input type="number" value={quantity} onChange={e => setQuantity(e.target.value)} />
+```
+
+### Textarea
+```jsx
+const [comment, setComment] = useState("");
+<textarea value={comment} onChange={e => setComment(e.target.value)} placeholder="Enter instructions" />
+```
+
+### Select dropdown
+```jsx
+const [payment, setPayment] = useState("");
+
+<select value={payment} onChange={e => setPayment(e.target.value)}>
+    <option value="">Select an option</option>
+    <option value="visa">Visa</option>
+    <option value="mastercard">Mastercard</option>
+    <option value="giftcard">Giftcard</option>
+</select>
+```
+
+- The `value` on `<select>` controls which option is selected
+- Each `<option>` has a `value` that gets stored in state on selection
+
+### Radio buttons
+```jsx
+const [shipping, setShipping] = useState("");
+
+<label>
+    <input type="radio" value="Pick Up" checked={shipping === "Pick Up"} onChange={e => setShipping(e.target.value)} />
+    Pick Up
+</label>
+
+<label>
+    <input type="radio" value="Delivery" checked={shipping === "Delivery"} onChange={e => setShipping(e.target.value)} />
+    Delivery
+</label>
+```
+
+- `checked` is controlled by comparing state to the radio's value
+- `checked={shipping === "Pick Up"}` — true only when that option matches state
+- `onChange` updates state with the selected value
