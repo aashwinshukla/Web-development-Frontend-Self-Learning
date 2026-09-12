@@ -1164,3 +1164,45 @@ setItems(prev => [...prev, newItem]);
 ```
 
 The updater function is especially important when multiple state updates happen in the same event handler, or when the new state depends on the old state.
+
+---
+
+## Updating Objects in State
+
+When state is an object, use the spread operator inside an updater function to update only the changed property while keeping the rest.
+
+```jsx
+const [car, setCar] = useState({ year: 2024, make: "Ford", model: "Mustang" });
+
+function handleYearChange(event) {
+    setCar(c => ({ ...c, year: event.target.value }));
+}
+
+function handleMakeChange(event) {
+    setCar(c => ({ ...c, make: event.target.value }));
+}
+
+function handleModelChange(event) {
+    setCar(c => ({ ...c, model: event.target.value }));
+}
+```
+
+- `...c` — spreads all existing properties from the current state
+- `, year: event.target.value` — overrides just the one property that changed
+- `({ })` — parentheses required around the object when returning from an arrow function, otherwise JS reads `{}` as a code block
+
+### Why not just do `setCar({ year: event.target.value })`
+
+That would replace the entire object with just `{ year: "..." }` — `make` and `model` would be gone. The spread preserves everything else.
+
+### In JSX
+
+```jsx
+<p>Your favourite car is: {car.year} {car.make} {car.model}</p>
+
+<input type="number" value={car.year}  onChange={handleYearChange} />
+<input type="text"   value={car.make}  onChange={handleMakeChange} />
+<input type="text"   value={car.model} onChange={handleModelChange} />
+```
+
+Each input is controlled by its corresponding property in the state object. Changing one input only updates that property — the others stay the same.
