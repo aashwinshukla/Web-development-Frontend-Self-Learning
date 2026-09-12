@@ -1056,3 +1056,59 @@ const [shipping, setShipping] = useState("");
 - `checked` is controlled by comparing state to the radio's value
 - `checked={shipping === "Pick Up"}` — true only when that option matches state
 - `onChange` updates state with the selected value
+
+---
+
+## Colour Picker — Dynamic Inline Styles with useState
+
+A practical project combining `useState`, a controlled `color` input, and dynamic inline styles.
+
+```jsx
+function ColourPicker() {
+    const [color, setColor] = useState("#FFFFFF");
+
+    function handleColorChange(event) {
+        setColor(event.target.value);
+    }
+
+    return (
+        <div className="color-picker-container">
+            <h1>Color Picker</h1>
+            <div className="color-display" style={{ backgroundColor: color }}>
+                <p>Selected Color: {color}</p>
+            </div>
+            <label>Select a Color: </label>
+            <input type="color" value={color} onChange={handleColorChange} />
+        </div>
+    );
+}
+```
+
+### How it works
+
+- `useState("#FFFFFF")` — starts with white
+- `input type="color"` — renders a native browser color picker
+- Every time a new color is picked, `onChange` fires and `setColor` updates state with the hex value (e.g. `"#ff6b6b"`)
+- `style={{ backgroundColor: color }}` — the `div` background updates instantly as state changes
+
+### Dynamic inline styles
+
+```jsx
+style={{ backgroundColor: color }}
+```
+
+- Outer `{}` — JSX expression
+- Inner `{}` — the JavaScript object
+- The value comes from state — so the style updates every time state changes
+
+This is the main use case for inline styles in React — when the style value is dynamic and comes from state or props. Static styles still go in CSS files.
+
+### `transition` in CSS
+
+```css
+.color-display {
+    transition: 0.25s ease;
+}
+```
+
+Adding a CSS transition to the element makes the background color change animate smoothly instead of snapping instantly.
