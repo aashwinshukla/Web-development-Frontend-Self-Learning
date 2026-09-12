@@ -1112,3 +1112,55 @@ This is the main use case for inline styles in React — when the style value is
 ```
 
 Adding a CSS transition to the element makes the background color change animate smoothly instead of snapping instantly.
+
+---
+
+## Updater Function
+
+When updating state based on the previous value, use an **updater function** inside the setter instead of referencing the state variable directly.
+
+### The problem
+
+```jsx
+const [count, setCount] = useState(0);
+
+// This can give wrong results
+const increment = () => {
+    setCount(count + 1);
+    setCount(count + 1);
+    setCount(count + 1);
+}
+// count only goes to 1, not 3
+```
+
+React batches state updates. All three calls read the same stale value of `count` — so they all set it to `0 + 1 = 1`.
+
+### The fix — updater function
+
+```jsx
+const increment = () => {
+    setCount(prev => prev + 1);
+    setCount(prev => prev + 1);
+    setCount(prev => prev + 1);
+}
+// count correctly goes to 3
+```
+
+- Pass a function to the setter instead of a value
+- React calls it with the **latest** state as the argument (`prev`)
+- Each call gets the result of the previous one — so they chain correctly
+
+### When to use it
+
+```jsx
+// Fine — single update, not based on previous value
+setCount(0);
+setName("Aashwin");
+
+// Use updater — multiple updates or based on previous value
+setCount(prev => prev + 1);
+setCount(prev => prev - 1);
+setItems(prev => [...prev, newItem]);
+```
+
+The updater function is especially important when multiple state updates happen in the same event handler, or when the new state depends on the old state.
