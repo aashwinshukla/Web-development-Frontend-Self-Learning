@@ -1270,3 +1270,63 @@ setFoods(foods.filter((_, i) => i !== index));
 ```
 
 React compares the old and new state — if it's the same array reference, no re-render happens. Always create a new array.
+
+---
+
+## Managing an Array of Objects in State
+
+Combining multiple state variables and an array of objects — add and remove cars from a list.
+
+```jsx
+const [cars, setCars] = useState([]);
+const [carYear, setCarYear]   = useState(new Date().getFullYear());
+const [carMake, setCarMake]   = useState("");
+const [carModel, setCarModel] = useState("");
+```
+
+- `cars` — the list, starts empty
+- `carYear`, `carMake`, `carModel` — controlled inputs for the new car form
+- `new Date().getFullYear()` — seeds the year input with the current year
+
+### Adding an object to the array
+
+```jsx
+function handleAddCar() {
+    const newCar = { year: carYear, make: carMake, model: carModel };
+    setCars(c => [...c, newCar]);
+
+    setCarYear(new Date().getFullYear());
+    setCarMake("");
+    setCarModel("");
+}
+```
+
+- Build the object from the current input state values
+- Spread existing array and append the new object
+- Reset all inputs back to their defaults after adding
+
+### Removing an object by index
+
+```jsx
+function handleRemoveCar(index) {
+    setCars(c => c.filter((_, i) => i !== index));
+}
+```
+
+Same filter pattern as before — works on arrays of objects too.
+
+### Rendering the list
+
+```jsx
+{cars.map((car, index) =>
+    <li key={index} onClick={() => handleRemoveCar(index)}>
+        {car.year} {car.make} {car.model}
+    </li>
+)}
+```
+
+Click any car to remove it. Each property accessed with dot notation — `car.year`, `car.make`, `car.model`.
+
+### `new Date().getFullYear()`
+
+Returns the current year as a number — used to pre-fill the year input so it always starts at the current year, and resets back to it after each add.
