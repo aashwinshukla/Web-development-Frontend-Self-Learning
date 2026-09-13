@@ -1736,3 +1736,100 @@ B and C are completely clean — they don't know about `user` at all.
 - Data that many components at different levels need — current user, theme, language
 - When prop drilling goes more than 2 levels deep
 - Not needed for data that only one or two components share — props are fine for that
+
+---
+
+## useRef
+
+`useRef` returns a mutable object with a `.current` property. It persists across renders but **does not cause a re-render when changed** — unlike `useState`.
+
+```jsx
+import { useRef } from "react";
+
+const ref = useRef(0);       // starts at 0
+const inputRef = useRef(null); // for DOM elements, start with null
+```
+
+---
+
+### Use case 1 — Persisting a value without re-rendering
+
+```jsx
+const ref = useRef(0);
+
+function handleClick() {
+    ref.current++;
+    console.log(ref.current); // increments but component does NOT re-render
+}
+```
+
+- `ref.current` holds the value
+- Changing it doesn't trigger a re-render — useful for tracking things like click counts, timer IDs, or previous values without affecting the UI
+
+### useState vs useRef
+
+```jsx
+// useState — changing triggers re-render
+const [count, setCount] = useState(0);
+setCount(count + 1); // component re-renders
+
+// useRef — changing does NOT trigger re-render
+const ref = useRef(0);
+ref.current++; // component stays the same
+```
+
+Use `useState` when the UI needs to reflect the change. Use `useRef` when you just need to remember a value internally.
+
+---
+
+### Use case 2 — Accessing a DOM element directly
+
+```jsx
+const inputRef = useRef(null);
+
+function handleClick() {
+    inputRef.current.focus(); // focuses the input
+    console.log(inputRef.current.value); // reads the input value
+}
+
+return <input ref={inputRef} />;
+```
+
+- `ref={inputRef}` — attaches the ref to the DOM element
+- After render, `inputRef.current` points to the actual `<input>` element
+- You can call any DOM method on it — `.focus()`, `.blur()`, `.click()`, `.value`
+- Initial value is `null` because the element doesn't exist until after the first render
+
+### Common uses for DOM refs
+
+```jsx
+inputRef.current.focus()          // focus an input
+inputRef.current.value            // read input value without controlled state
+inputRef.current.scrollIntoView() // scroll to an element
+videoRef.current.play()           // control a video
+```
+
+---
+
+### Strict Mode and useEffect
+
+In development, React's **Strict Mode** (in `main.jsx`) runs effects twice on purpose — to help catch bugs. This means `console.log("COMPONENT RENDERED")` appears twice in the console even though the component only mounted once. This is expected and only happens in development, not in production.
+
+```jsx
+// main.jsx — Strict Mode wraps the app
+<React.StrictMode>
+    <App />
+</React.StrictMode>
+```
+
+Remove `<React.StrictMode>` only to test real render behaviour — put it back after.
+
+---
+
+### Quick reference
+
+| | useState | useRef |
+|---|---|---|
+| Triggers re-render | Yes | No |
+| Persists across renders | Yes | Yes |
+| Use for | UI values | Internal values, DOM access |
