@@ -1,33 +1,49 @@
 # Frontend Web Development — Learning in Public
 
-A structured documentation of my frontend learning journey — HTML, CSS, JavaScript, and React. Built as both a reference for myself and a record of progress.
+Documenting my frontend learning journey through structured notes and projects — HTML, CSS, JavaScript, and React. Built as a personal reference and a record of progress.
 
 ---
 
-## What's in here
+## Structure
 
-**HTML** — Structure, elements, forms, semantic layout, media  
-**CSS** — Styling, flexbox, animations, transforms, components  
-**JavaScript** — Fundamentals through advanced — DOM, async, classes, modules  
-**React** — In progress
-
-Each folder has notes written in my own words alongside working code.
+```
+├── html/               — structure, elements, forms, media, semantic layout
+├── css/                — styling, flexbox, animations, transforms, components
+├── JavaScript/
+│   ├── notes/          — fundamentals through advanced JS concepts
+│   └── projects/       — 8 standalone projects
+└── React.js/
+    ├── basic.md        — React concepts and hooks
+    └── projects/       — React projects
+```
 
 ---
 
-## Projects built so far
+## JavaScript Projects
 
-| Project | Stack |
+| Project | Concepts used |
 |---|---|
-| Counter | HTML CSS JS |
-| Random Number Generator | HTML CSS JS |
-| Number Guessing Game | HTML CSS JS |
-| Random Password Generator | HTML CSS JS |
-| Digital Clock | HTML CSS JS |
-| Stopwatch | HTML CSS JS |
-| Calculator | HTML CSS JS |
-| Rock Paper Scissors | HTML CSS JS |
-| Weather App | HTML CSS JS + OpenWeatherMap API |
+| Counter | DOM, events, functions |
+| Random Number Generator | Math.random, conditionals, DOM |
+| Number Guessing Game | Math.random, conditionals, state, DOM |
+| Random Password Generator | Arrays, loops, string methods, DOM |
+| Digital Clock | Date, setInterval, padStart |
+| Stopwatch | Date.now, setInterval, clearInterval |
+| Calculator | DOM, querySelectorAll, data attributes, error handling |
+| Rock Paper Scissors | Objects, arrays, classList, events |
+| Weather App | Fetch API, async/await, JSON, DOM |
+
+---
+
+## React Projects
+
+| Project | Concepts used |
+|---|---|
+| Counter | useState |
+| Colour Picker | useState, dynamic inline styles |
+| To-Do List | useState, array state, controlled inputs |
+| Digital Clock | useState, useEffect, setInterval |
+| Stopwatch | useState, useEffect, setInterval, clearInterval |
 
 ---
 
@@ -42,6 +58,4 @@ Each folder has notes written in my own words alongside working code.
 
 ## Status
 
-Actively learning. Notes and projects are added as I progress.
-
-Currently on: **React**
+Actively learning. Notes and projects added as progress is made.
