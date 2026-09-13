@@ -1551,3 +1551,57 @@ useEffect(() => {
 ```
 
 Each `useEffect` should do one thing. Splitting them keeps the logic clear.
+
+---
+
+## Digital Clock — useEffect with setInterval
+
+A practical project combining `useState`, `useEffect`, `setInterval`, and a Date formatter.
+
+```jsx
+const [time, setTime] = useState(new Date());
+
+useEffect(() => {
+    const intervalId = setInterval(() => {
+        setTime(new Date());
+    }, 1000);
+
+    return () => {
+        clearInterval(intervalId);
+    };
+}, []);
+```
+
+- `useState(new Date())` — initialises with the current date/time object
+- `setInterval` runs every 1000ms and updates state with a fresh `new Date()`
+- React re-renders every second with the new time
+- Cleanup clears the interval when the component unmounts — prevents a memory leak
+- `[]` — runs once on mount, the interval handles the updates from there
+
+### Formatting time — 12 hour with AM/PM
+
+```jsx
+function formateTime() {
+    let hours        = time.getHours();
+    const minutes    = time.getMinutes();
+    const seconds    = time.getSeconds();
+    const meridiem   = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12 || 12;
+
+    return `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)} ${meridiem}`;
+}
+```
+
+- `hours >= 12 ? "PM" : "AM"` — determine AM/PM before converting hours
+- `hours % 12 || 12` — converts 24h to 12h. `% 12` gives 0 for midnight and noon, `|| 12` converts that 0 to 12
+
+### padZero helper
+
+```jsx
+function padZero(number) {
+    return (number < 10 ? "0" : "") + number;
+}
+```
+
+Adds a leading zero for single digit numbers — `9` becomes `"09"`. Same as `padStart(2, "0")` from plain JS string methods.
