@@ -3,49 +3,35 @@ import { useState, useEffect } from "react";
 
 function MyComponent (){
     
-    const [count, setCount] = useState(0);
-    const [color, setColor] = useState("green");
+    const [width, setWidth] = useState(window.innerWidth);
+    const [height, setHeight] = useState(window.innerHeight);
     
-    //     document.title = `Count: ${count} `;
-    
-    // useEffect(() => {
-    //     document.title = `Count: ${count} `;
-    // }); 
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+        console.log("EVENT LISTNER ADDED");
 
-    // useEffect(() => {
-    //     document.title = `My Counter Program `;
-    // }, []);
-
-    // useEffect(() => {
-    //     document.title = `Count: ${count} ${color}`;
-    // }, [count]);
+        return() => {
+            window.removeEventListener("resize", handleResize);
+            console.log("EVENT LISTNER REMOVED");
+        }
+    }, [])
 
     useEffect(() => {
-        document.title = `Count: ${count} ${color}`;
+        document.title = `Size: ${width} * ${height}`;
 
-        return () => {
-            // SOME CLEANUP CODE
-        }
-    }, [count, color]);
+    }, [width, height]);
 
+    // window.addEventListener("resize", handleResize);
+    // console.log("EVENT LISTNER ADDED");
 
-    function addCount(){
-        setCount(c => c + 1);
+    function handleResize(){
+        setWidth(window.innerWidth);
+        setHeight(window.innerHeight);
     }
-
-    function subCount(){
-        setCount(c => c - 1);
-    }
-
-    function changeColor(){
-        setColor(c => c === "green"? "red" : "green" );
-    }
-
-    return( <div>
-                <p style={{color: color}}>Count: {count}</p>
-                <button onClick={addCount}>Add</button>
-                <button onClick={subCount}>Substract</button>
-                <button onClick={changeColor}>Change Color</button>
-            </div>);
+    
+    return( <>
+              <p>Window Width: {width}px</p>
+              <p>Window Height: {height}px</p>  
+            </>);
 }
 export default MyComponent

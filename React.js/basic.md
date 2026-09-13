@@ -1488,3 +1488,66 @@ useEffect(() => {
 | `[]` | Once — on mount only |
 | `[value]` | On mount + whenever `value` changes |
 | `[a, b]` | On mount + whenever `a` or `b` changes |
+
+---
+
+### useEffect — Event Listeners
+
+A practical example of `useEffect` with event listeners — tracking window size in real time.
+
+```jsx
+const [width, setWidth]   = useState(window.innerWidth);
+const [height, setHeight] = useState(window.innerHeight);
+
+useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+        window.removeEventListener("resize", handleResize);
+    };
+}, []);
+
+useEffect(() => {
+    document.title = `Size: ${width} x ${height}`;
+}, [width, height]);
+
+function handleResize() {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+}
+```
+
+### Why the cleanup matters here
+
+The empty array `[]` means the event listener is added once when the component mounts. Without the cleanup, the listener stays attached even after the component is removed — this is called a **memory leak**. The cleanup function removes it:
+
+```jsx
+return () => {
+    window.removeEventListener("resize", handleResize);
+};
+```
+
+### Why not just add the listener outside useEffect
+
+```jsx
+// Wrong — runs on every render, adds a new listener every time
+window.addEventListener("resize", handleResize);
+```
+
+Every re-render would add another listener — the handler would fire multiple times per resize. `useEffect` with `[]` ensures it only runs once.
+
+### Two separate useEffects
+
+Two `useEffect` calls in the same component is normal — each handles a different concern:
+
+```jsx
+// First — sets up the event listener once
+useEffect(() => { ... }, []);
+
+// Second — updates the page title when size changes
+useEffect(() => {
+    document.title = `Size: ${width} x ${height}`;
+}, [width, height]);
+```
+
+Each `useEffect` should do one thing. Splitting them keeps the logic clear.
