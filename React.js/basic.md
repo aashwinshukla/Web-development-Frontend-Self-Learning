@@ -1662,3 +1662,77 @@ In JSX, template literal syntax `${}` doesn't work inside regular quotes:
 // Also correct — template literal inside JSX expression
 <h2>{`Hello ${user}`}</h2>
 ```
+
+---
+
+## useContext
+
+`useContext` solves prop drilling — any component can access shared data directly without it being passed through every layer in between.
+
+### Step 1 — Create the context
+
+```jsx
+// ComponentA.jsx
+import { useState, createContext } from "react";
+
+export const UserContext = createContext();
+```
+
+- `createContext()` creates a context object
+- Exported so other components can import and use it
+- Called outside the component — it's not tied to any render
+
+### Step 2 — Provide the value
+
+Wrap the components that need access in a `Provider`. The `value` prop is what gets shared.
+
+```jsx
+function ComponentA() {
+    const [user, setUser] = useState("Aashwin");
+
+    return (
+        <UserContext.Provider value={user}>
+            <ComponentB />
+        </UserContext.Provider>
+    );
+}
+```
+
+- Any component inside the `Provider` — no matter how deeply nested — can access `value`
+- B and C don't need to pass anything down — they're just wrappers now
+
+### Step 3 — Consume the value
+
+```jsx
+// ComponentD.jsx
+import { useContext } from "react";
+import { UserContext } from "./ComponentA";
+
+function ComponentD() {
+    const user = useContext(UserContext);
+
+    return <h2>{`Bye ${user}`}</h2>;
+}
+```
+
+- Import `useContext` from React
+- Import the context object from wherever it was created
+- `useContext(UserContext)` returns the current value from the nearest `Provider` above it in the tree
+
+### Before vs after
+
+```
+Before (prop drilling)          After (useContext)
+A → B (passes user)             A provides value via Provider
+B → C (passes user)             B and C pass nothing
+C → D (passes user)             D reads directly with useContext
+D uses user                     D uses user
+```
+
+B and C are completely clean — they don't know about `user` at all.
+
+### When to use useContext
+
+- Data that many components at different levels need — current user, theme, language
+- When prop drilling goes more than 2 levels deep
+- Not needed for data that only one or two components share — props are fine for that
