@@ -1,55 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 function MyComponent (){
     
-    const [cars, setCars] = useState([]);
-    const [carYear, setCarYear] = useState(new Date().getFullYear());
-    const [carMake, setCarMake] =  useState("");
-    const [carModel, setCarModel] =  useState("");
+    const [count, setCount] = useState(0);
+    const [color, setColor] = useState("green");
+    
+    //     document.title = `Count: ${count} `;
+    
+    // useEffect(() => {
+    //     document.title = `Count: ${count} `;
+    // }); 
+
+    // useEffect(() => {
+    //     document.title = `My Counter Program `;
+    // }, []);
+
+    // useEffect(() => {
+    //     document.title = `Count: ${count} ${color}`;
+    // }, [count]);
+
+    useEffect(() => {
+        document.title = `Count: ${count} ${color}`;
+    }, [count, color]);
 
 
-    function handleAddCar(){
-        const newCar = {year: carYear, make: carMake, model: carModel};
-        setCars(c => [...c, newCar]);
-
-        setCarYear(new Date().getFullYear());
-        setCarMake("");
-        setCarModel("");
+    function addCount(){
+        setCount(c => c + 1);
     }
 
-    function handleRemoveCar(index){
-        setCars(c => c.filter((_, i) => i !== index));
+    function subCount(){
+        setCount(c => c - 1);
     }
 
-    function handleChangeYear(event){
-        setCarYear(event.target.value);
+    function changeColor(){
+        setColor(c => c === "green"? "red" : "green" );
     }
 
-    function handleChangeMake(event){
-        setCarMake(event.target.value);
-    }
-
-    function handleChangeModel(event){
-        setCarModel(event.target.value);
-    }
-
-
-    return(  <div>
-                <h2>List of Car Objects</h2>
-                <ul>
-                    {cars.map((car, index) =>
-                         
-                        <li key={index} onClick={() => handleRemoveCar(index)}>
-                            {car.year} {car.make} {car.model}
-                        </li> )}
-                </ul> 
-
-                <input type = "number" value = {carYear} onChange={handleChangeYear}/><br/>
-                <input type = "text" value = {carMake} onChange={handleChangeMake} placeholder="Enter car make"/><br/>
-                <input type = "text" value = {carModel} onChange={handleChangeModel} placeholder="Enter car model"/><br/>
-
-                <button onClick={handleAddCar}>Add Car</button>
+    return( <div>
+                <p style={{color: color}}>Count: {count}</p>
+                <button onClick={addCount}>Add</button>
+                <button onClick={subCount}>Substract</button>
+                <button onClick={changeColor}>Change Color</button>
             </div>);
 }
 export default MyComponent

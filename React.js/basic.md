@@ -1330,3 +1330,87 @@ Click any car to remove it. Each property accessed with dot notation — `car.ye
 ### `new Date().getFullYear()`
 
 Returns the current year as a number — used to pre-fill the year input so it always starts at the current year, and resets back to it after each add.
+
+---
+
+## To-Do List — Full useState Project
+
+A complete project combining everything covered — controlled input, adding to array state, removing by index, and reordering items.
+
+```jsx
+const [tasks, setTasks]   = useState([]);
+const [newTask, setNewTask] = useState("");
+```
+
+### Adding a task
+
+```jsx
+function addTask() {
+    if (newTask.trim() !== "") {
+        setTasks(t => [...t, newTask]);
+        setNewTask("");
+    }
+}
+```
+
+- `trim()` prevents adding empty or whitespace-only tasks
+- Spread existing tasks and append the new one
+- Reset the input back to empty after adding
+
+### Deleting a task
+
+```jsx
+function deleteTask(index) {
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+}
+```
+
+Filter out the item at the clicked index — same pattern as before.
+
+### Moving tasks up and down
+
+```jsx
+function moveTaskUp(index) {
+    if (index > 0) {
+        const updatedTasks = [...tasks];
+        [updatedTasks[index], updatedTasks[index - 1]] = [updatedTasks[index - 1], updatedTasks[index]];
+        setTasks(updatedTasks);
+    }
+}
+
+function moveTaskDown(index) {
+    if (index < tasks.length - 1) {
+        const updatedTasks = [...tasks];
+        [updatedTasks[index], updatedTasks[index + 1]] = [updatedTasks[index + 1], updatedTasks[index]];
+        setTasks(updatedTasks);
+    }
+}
+```
+
+- Spread tasks into a new array first — never mutate state directly
+- **Array destructuring swap** — `[a, b] = [b, a]` swaps two elements in one line without a temp variable
+- Guard conditions prevent going out of bounds — `index > 0` for up, `index < tasks.length - 1` for down
+
+### Rendering
+
+```jsx
+{tasks.map((task, index) =>
+    <li key={index}>
+        <span className="text">{task}</span>
+        <button onClick={() => deleteTask(index)}>Delete</button>
+        <button onClick={() => moveTaskUp(index)}>Move Up</button>
+        <button onClick={() => moveTaskDown(index)}>Move Down</button>
+    </li>
+)}
+```
+
+Each button passes `index` to its handler via an arrow function wrapper.
+
+### Array destructuring swap
+
+```javascript
+[arr[i], arr[j]] = [arr[j], arr[i]];
+```
+
+Swaps two array elements in one line. The right side creates a temporary array with the values swapped, then the left side assigns them back. No temp variable needed.
