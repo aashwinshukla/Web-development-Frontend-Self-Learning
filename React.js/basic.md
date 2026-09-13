@@ -1414,3 +1414,77 @@ Each button passes `index` to its handler via an arrow function wrapper.
 ```
 
 Swaps two array elements in one line. The right side creates a temporary array with the values swapped, then the left side assigns them back. No temp variable needed.
+
+---
+
+## useEffect — Side Effect Hook
+
+`useEffect` runs code **after** the component renders. It's used for side effects — things that happen outside of rendering, like updating the page title, fetching data, setting up timers, or subscribing to events.
+
+```jsx
+import { useState, useEffect } from "react";
+```
+
+### Basic syntax
+
+```jsx
+useEffect(() => {
+    // code to run after render
+}, [dependencies]);
+```
+
+- First argument — the function to run
+- Second argument — the **dependency array** — controls when it runs
+
+---
+
+### Dependency array behaviour
+
+```jsx
+// No dependency array — runs after EVERY render
+useEffect(() => {
+    document.title = `Count: ${count}`;
+});
+
+// Empty array — runs only ONCE on mount (component first appears)
+useEffect(() => {
+    document.title = "My Counter Program";
+}, []);
+
+// With values — runs only when those values change
+useEffect(() => {
+    document.title = `Count: ${count}`;
+}, [count]);
+
+// Multiple dependencies — runs when either changes
+useEffect(() => {
+    document.title = `Count: ${count} ${color}`;
+}, [count, color]);
+```
+
+---
+
+### Cleanup function
+
+The function returned from `useEffect` runs when the component **unmounts** (is removed from the page) or before the effect runs again. Used to cancel timers, remove event listeners, etc.
+
+```jsx
+useEffect(() => {
+    document.title = `Count: ${count} ${color}`;
+
+    return () => {
+        // cleanup code runs before next effect or on unmount
+    };
+}, [count, color]);
+```
+
+---
+
+### Summary
+
+| Dependency array | When it runs |
+|---|---|
+| Not provided | After every render |
+| `[]` | Once — on mount only |
+| `[value]` | On mount + whenever `value` changes |
+| `[a, b]` | On mount + whenever `a` or `b` changes |
