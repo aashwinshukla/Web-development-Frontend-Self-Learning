@@ -1605,3 +1605,60 @@ function padZero(number) {
 ```
 
 Adds a leading zero for single digit numbers — `9` becomes `"09"`. Same as `padStart(2, "0")` from plain JS string methods.
+
+---
+
+## Prop Drilling
+
+Prop drilling is when data is passed through multiple layers of components just to get it to the one that actually needs it — even if the middle components don't use it at all.
+
+```
+App
+└── ComponentA  (has user state)
+      └── ComponentB  (doesn't use user, just passes it down)
+            └── ComponentC  (doesn't use user, just passes it down)
+                  └── ComponentD  (actually uses user)
+```
+
+```jsx
+// App.jsx
+<ComponentA />
+
+// ComponentA — has the data, passes it to B
+const [user, setUser] = useState("Aashwin");
+<ComponentB user={user} />
+
+// ComponentB — doesn't use user, just passes it to C
+<ComponentC user={props.user} />
+
+// ComponentC — doesn't use user, just passes it to D
+<ComponentD user={props.user} />
+
+// ComponentD — finally uses it
+<h2>{`Bye ${props.user}`}</h2>
+```
+
+### The problem
+
+- B and C are forced to accept and forward a prop they don't care about
+- As the app grows this becomes messy — changing the prop name means updating every component in the chain
+- Hard to maintain and hard to read
+
+### The solution — useContext
+
+Instead of passing props through every layer, `useContext` lets any component access shared data directly — no matter how deep it is. This is covered next.
+
+### Common mistake with prop drilling
+
+In JSX, template literal syntax `${}` doesn't work inside regular quotes:
+
+```jsx
+// Wrong — renders literally as "Hello ${user}"
+<h2>Hello ${user}</h2>
+
+// Correct — JSX expression
+<h2>Hello {user}</h2>
+
+// Also correct — template literal inside JSX expression
+<h2>{`Hello ${user}`}</h2>
+```

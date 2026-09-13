@@ -7,7 +7,7 @@ function ComponentB (props){
     
     return( <div className="box">
                 <h1>ComponentB</h1>
-                <ComponentC/>
+                <ComponentC user ={props.user}/>
             </div>);
 }
 export default ComponentB
