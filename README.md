@@ -11,9 +11,9 @@ Documenting my frontend learning journey through structured notes and projects �
 ├── css/                — styling, flexbox, animations, transforms, components
 ├── JavaScript/
 │   ├── notes/          — fundamentals through advanced JS concepts
-│   └── projects/       — 8 standalone projects
+│   └── projects/       — 9 standalone projects
 └── React.js/
-    ├── basic.md        — React concepts and hooks
+    ├── notes/          — React concepts and hooks
     └── projects/       — React projects
 ```
 
