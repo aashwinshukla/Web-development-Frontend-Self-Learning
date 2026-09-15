@@ -54,3 +54,59 @@ Same result — no CSS file, no class naming, no context switching.
 - Team already deep in a BEM or OOCSS workflow
 
 ---
+
+## 3. Fundamentals — How Tailwind Classes Work
+
+### Tailwind Play
+Tailwind Play (`play.tailwindcss.com`) is the official browser-based playground. Write HTML with Tailwind classes on the left, see the live preview on the right, and inspect the **generated CSS** in the bottom bar — useful for understanding exactly what each class compiles to.
+
+### First example
+```html
+<h1 class="mt-2 text-center text-lg text-green-300">Hello World</h1>
+```
+
+Breaking down each class:
+
+| Class | What it does | Generated CSS equivalent |
+|---|---|---|
+| `mt-2` | Margin top | `margin-top: 0.5rem` |
+| `text-center` | Align text | `text-align: center` |
+| `text-lg` | Font size large | `font-size: 1.125rem; line-height: 1.75rem` |
+| `text-green-300` | Text color | `color: oklch(0.871 0.15 154.449)` |
+
+### What the generated CSS shows
+The bottom bar in Tailwind Play shows the actual CSS that Tailwind generates for the classes used. The output is split into distinct sections:
+
+**`@layer base`**
+- Contains Tailwind's global reset/normalize styles — things like `box-sizing: border-box`, default margin resets, font smoothing, etc.
+- Applied to every project automatically. This is Tailwind's version of a CSS reset so browsers render elements consistently.
+
+**`@layer utilities`**
+- This is where the classes actually written in the HTML end up.
+- Each used class gets compiled into its own rule here — nothing extra, only what's used.
+- For the example above, `mt-2`, `text-center`, `text-lg`, and `text-green-300` each appear as separate CSS rules inside this layer.
+
+A few things worth noting about the output overall:
+- Only the classes **actually used** in the HTML are included — nothing extra is generated. This is how Tailwind keeps production builds small.
+- Each utility class maps to a minimal, single-purpose CSS rule.
+- Tailwind uses modern CSS values internally (like `oklch` for colors) even if the class name looks simple like `text-green-300`.
+- The output is plain, valid CSS — no magic, just pre-defined values from Tailwind's design scale.
+
+### How the class naming pattern works
+Tailwind class names follow a readable pattern:
+
+```
+{property}-{value}
+```
+
+Examples:
+- `mt-2` → margin-top, scale value 2
+- `text-lg` → font-size, large preset
+- `text-green-300` → color, green palette, shade 300
+- `text-center` → text-align center
+
+The numeric scale (1, 2, 3, 4...) maps to `rem` values based on a **4px base unit** — so `mt-2` = `0.5rem` = `8px`, `mt-4` = `1rem` = `16px`, and so on.
+
+Color shades run from **50 (lightest) to 950 (darkest)** — `green-300` is a light green, `green-700` would be a darker one.
+
+---
