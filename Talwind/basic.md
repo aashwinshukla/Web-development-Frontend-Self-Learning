@@ -343,3 +343,95 @@ Tailwind Play runs the JIT engine in the browser. Every keystroke re-runs the co
 Both cover the underlying CSS concepts, which map directly to Tailwind's flex and grid utility classes.
 
 ---
+
+## 7. Responsive Design & Media Queries
+
+### Mobile-First Approach
+Tailwind follows a **mobile-first** design philosophy. This means styles without any prefix apply to **all screen sizes**, and prefixed utilities only kick in at and above a certain breakpoint.
+
+So the pattern is — style for mobile first, then layer on overrides for larger screens using breakpoint prefixes.
+
+```html
+<!-- mobile: black, sm and above: amber-500, md and above: amber-700 -->
+<div class="bg-black sm:bg-amber-500 md:bg-amber-700">
+  <p class="text-white">I appear on screen wider than 768px</p>
+</div>
+```
+
+---
+
+### Breakpoints
+
+| Prefix | Min-width | Typical target |
+|---|---|---|
+| *(none)* | 0px | Mobile (default) |
+| `sm:` | 640px | Large phones / small tablets |
+| `md:` | 768px | Tablets |
+| `lg:` | 1024px | Laptops |
+| `xl:` | 1280px | Desktops |
+| `2xl:` | 1536px | Large / wide screens |
+
+Every breakpoint prefix compiles to a `@media (min-width: ...)` rule in the generated CSS.
+
+---
+
+### Max-width variant — `max-{breakpoint}:`
+By default all breakpoints are `min-width`. Tailwind also supports `max-{breakpoint}:` for targeting screen sizes **below** a breakpoint.
+
+| Prefix | Max-width | Meaning |
+|---|---|---|
+| `max-sm:` | 639px | Only on screens smaller than sm |
+| `max-md:` | 767px | Only on screens smaller than md |
+| `max-lg:` | 1023px | Only on screens smaller than lg |
+| `max-xl:` | 1279px | Only on screens smaller than xl |
+| `max-2xl:` | 1535px | Only on screens smaller than 2xl |
+
+```html
+<!-- black only on screens below md (767px) -->
+<div class="max-md:bg-black">...</div>
+```
+
+---
+
+### How it compiles
+Each responsive class becomes a media-wrapped rule in `@layer utilities`:
+
+```css
+/* sm:bg-amber-500 */
+@media (min-width: 640px) {
+  .sm\:bg-amber-500 { background-color: oklch(...) }
+}
+
+/* md:bg-amber-700 */
+@media (min-width: 768px) {
+  .md\:bg-amber-700 { background-color: oklch(...) }
+}
+
+/* max-md:bg-black */
+@media (max-width: 767px) {
+  .max-md\:bg-black { background-color: #000 }
+}
+```
+
+No manually written media queries needed — the breakpoint prefix handles it all.
+
+---
+
+### Key points
+- Unprefixed classes = mobile styles, always applied
+- `sm:`, `md:`, `lg:` etc. = min-width, stack on top as screen grows
+- `max-md:`, `max-lg:` etc. = max-width, only apply below that breakpoint
+- Breakpoint prefixes work with **any** utility — layout, spacing, typography, colors, visibility, etc.
+
+```html
+<!-- stack on mobile, side by side on md and above -->
+<div class="flex flex-col md:flex-row">...</div>
+
+<!-- hidden on mobile, visible from md up -->
+<div class="hidden md:block">...</div>
+
+<!-- full width on mobile, half on lg -->
+<div class="w-full lg:w-1/2">...</div>
+```
+
+---
