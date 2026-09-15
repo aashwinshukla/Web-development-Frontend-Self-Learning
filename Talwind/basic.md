@@ -277,3 +277,69 @@ Any value in square brackets gets compiled on the fly. This means the full power
 Tailwind Play runs the JIT engine in the browser. Every keystroke re-runs the compiler — which is why the generated CSS in the bottom bar updates live as classes are added or removed.
 
 ---
+
+## 6. Flexbox & Grid
+
+### Flexbox example
+```html
+<div class="flex flex-col items-center justify-center space-y-6 mt-2">
+  <div class="h-16 w-16 rounded-full bg-blue-400"></div>
+  <div class="h-16 w-16 rounded-full bg-orange-400"></div>
+  <div class="h-16 w-16 rounded-full bg-green-400"></div>
+</div>
+```
+
+| Class | CSS |
+|---|---|
+| `flex` | `display: flex` |
+| `flex-col` | `flex-direction: column` |
+| `items-center` | `align-items: center` |
+| `justify-center` | `justify-content: center` |
+| `space-y-{n}` | adds `margin-top` between children vertically |
+| `space-x-{n}` | adds `margin-left` between children horizontally |
+
+> `space-y-*` and `space-x-*` are a Tailwind shorthand — instead of manually adding margin to each child, it targets all children except the first using a CSS sibling selector.
+
+---
+
+### Grid example
+```html
+<div class="grid grid-cols-3 gap-2 mt-2 mx-2">
+  <div class="h-16 rounded-full bg-blue-400"></div>
+  <div class="h-16 rounded-full bg-orange-400"></div>
+  <div class="h-16 rounded-full bg-green-400"></div>
+</div>
+```
+
+| Class | CSS |
+|---|---|
+| `grid` | `display: grid` |
+| `grid-cols-{n}` | `grid-template-columns: repeat(n, minmax(0, 1fr))` |
+| `grid-rows-{n}` | `grid-template-rows: repeat(n, minmax(0, 1fr))` |
+| `gap-{n}` | `gap` — spacing between all rows and columns |
+| `gap-x-{n}` | `column-gap` only |
+| `gap-y-{n}` | `row-gap` only |
+| `col-span-{n}` | `grid-column: span n` — item spans n columns |
+| `row-span-{n}` | `grid-row: span n` — item spans n rows |
+| `col-start-{n}` | `grid-column-start: n` |
+| `col-end-{n}` | `grid-column-end: n` |
+
+---
+
+### Flexbox vs Grid — quick distinction
+
+| | Flexbox | Grid |
+|---|---|---|
+| Direction | One axis at a time (row **or** column) | Two axes simultaneously (rows **and** columns) |
+| Best for | Nav bars, button groups, centering, linear layouts | Page layouts, card grids, complex 2D arrangements |
+| Item sizing | Items size to their content by default | Items fit into defined grid tracks |
+
+---
+
+### Practice resources
+- **Flexbox Froggy** — `flexboxfroggy.com` — game for learning flexbox properties by moving frogs to lily pads
+- **Grid Garden** — `cssgridgarden.com` — game for learning CSS grid by watering a carrot garden
+
+Both cover the underlying CSS concepts, which map directly to Tailwind's flex and grid utility classes.
+
+---
