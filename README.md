@@ -15,7 +15,7 @@ Documenting my frontend learning journey through structured notes and projects �
 ├── React.js/
 │   ├── notes/          — React concepts and hooks
 │   └── projects/       — React projects
-└── Talwind/            — Tailwind CSS notes, chapter-wise
+└── Tailwind/            — Tailwind CSS notes, chapter-wise
 ```
 
 ---
