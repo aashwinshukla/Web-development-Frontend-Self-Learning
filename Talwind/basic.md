@@ -1,5 +1,9 @@
 # Tailwind CSS
 
+> **Reference:** `tailwindcss.com/docs` — official docs, every utility class listed with live examples, searchable by property name. Best place to look up any class visually.
+
+---
+
 ## 1. Introduction
 
 Tailwind CSS is a **utility-first CSS framework** where styling is done directly in HTML using small, pre-built classes instead of writing styles in a separate CSS file.
@@ -433,5 +437,72 @@ No manually written media queries needed — the breakpoint prefix handles it al
 <!-- full width on mobile, half on lg -->
 <div class="w-full lg:w-1/2">...</div>
 ```
+
+---
+
+## 8. Dark Mode
+
+### How it works
+Tailwind's dark mode is class-based by default in v4. A `dark:` prefix on any utility applies that style only when a `.dark` class is present on a parent element (usually `<html>` or `<body>`).
+
+```html
+<div class="bg-white dark:bg-black text-black dark:text-white">
+  Dark mode disabled
+</div>
+```
+
+- `bg-white` — default (light mode) background
+- `dark:bg-black` — background when `.dark` class is active
+- `text-black` — default text color
+- `dark:text-white` — text color in dark mode
+
+---
+
+### Enabling dark mode in Tailwind v4
+In v4, dark mode variant behavior is configured via CSS using `@custom-variant`:
+
+```css
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+This tells Tailwind — apply `dark:` utilities whenever the element or any of its ancestors has the `.dark` class. Toggle dark mode by adding/removing the `dark` class on `<html>` with JavaScript.
+
+> Note: `@custon-variant` in the example is a typo — the correct directive is `@custom-variant`.
+
+---
+
+### Toggling dark mode with JavaScript
+```js
+// enable dark mode
+document.documentElement.classList.add('dark')
+
+// disable dark mode
+document.documentElement.classList.remove('dark')
+
+// toggle
+document.documentElement.classList.toggle('dark')
+```
+
+---
+
+### Common dark mode utility pairs
+
+| Light | Dark |
+|---|---|
+| `bg-white` | `dark:bg-black` |
+| `bg-gray-100` | `dark:bg-gray-900` |
+| `text-black` | `dark:text-white` |
+| `text-gray-700` | `dark:text-gray-300` |
+| `border-gray-200` | `dark:border-gray-700` |
+| `shadow-md` | `dark:shadow-gray-900` |
+
+---
+
+### Key points
+- `dark:` works with **any** utility — colors, borders, shadows, opacity, etc.
+- Class-based approach gives full manual control — OS preference does not auto-trigger it unless explicitly wired up with JS (`window.matchMedia('(prefers-color-scheme: dark)')`)
+- Pairs cleanly with responsive prefixes — `md:dark:bg-gray-800` is valid
 
 ---
