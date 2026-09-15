@@ -735,3 +735,145 @@ Useful when classes are generated dynamically or come from files outside the def
 | `@source` | Manually adds file paths for class scanning |
 
 ---
+
+## 11. Misc Utilities Worth Knowing
+
+### Accent Color
+Controls the color of browser-native form elements — checkboxes, radio buttons, range sliders, progress bars.
+
+```html
+<input type="checkbox" class="accent-violet-500" checked />
+<input type="range" class="accent-pink-500" />
+```
+
+| Class | CSS |
+|---|---|
+| `accent-{color}-{shade}` | `accent-color: ...` |
+| `accent-auto` | resets to browser default |
+
+---
+
+### Fluid Text (Viewport-based font sizing)
+Tailwind doesn't have a built-in fluid text utility, but it's done cleanly using arbitrary values with `clamp()`:
+
+```html
+<h1 class="text-[clamp(1.5rem,5vw,3rem)]">Fluid Heading</h1>
+```
+
+- `clamp(min, preferred, max)` — scales the font size between `min` and `max` based on viewport width
+- No media queries needed — the text scales smoothly across all screen sizes
+- Common pattern in landing pages and hero sections
+
+---
+
+### File Input Styling
+Tailwind provides `file:` prefix to style the button part of a file input — the part the browser renders natively.
+
+```html
+<input type="file" class="file:bg-violet-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+```
+
+| Class | What it styles |
+|---|---|
+| `file:bg-{color}` | background of the file button |
+| `file:text-{color}` | text color of the file button |
+| `file:px-{n}` / `file:py-{n}` | padding inside the file button |
+| `file:rounded-{size}` | border radius of the file button |
+| `file:border-0` | removes default border |
+| `file:cursor-pointer` | pointer cursor on hover |
+
+---
+
+### Highlight Color (Selection)
+Controls the background color when text is selected/highlighted by the user.
+
+```html
+<p class="selection:bg-violet-400 selection:text-white">
+  Select this text to see the highlight color.
+</p>
+```
+
+| Class | CSS |
+|---|---|
+| `selection:bg-{color}` | background of selected text |
+| `selection:text-{color}` | color of selected text |
+
+Can be put on a parent element and it cascades down to all children.
+
+---
+
+### Open Prefix
+Targets the open state of `<details>` and `<dialog>` elements — when they are expanded/visible.
+
+```html
+<details class="open:bg-violet-100 open:border open:border-violet-400 rounded-lg p-2">
+  <summary class="cursor-pointer font-semibold">Click to expand</summary>
+  <p class="mt-2 text-sm">Content shown when open.</p>
+</details>
+```
+
+| Class | When it applies |
+|---|---|
+| `open:bg-{color}` | when `<details>` or `<dialog>` is open |
+| `open:border-{...}` | border only when open |
+| `open:shadow-{...}` | shadow only when open |
+
+Works like `hover:` or `focus:` — just a state-based prefix.
+
+---
+
+### Caret Color
+Controls the color of the text cursor (blinking caret) inside inputs and textareas.
+
+```html
+<input type="text" class="caret-violet-500 outline-none border px-3 py-2 rounded" />
+<textarea class="caret-pink-400"></textarea>
+```
+
+| Class | CSS |
+|---|---|
+| `caret-{color}-{shade}` | `caret-color: ...` |
+| `caret-transparent` | hides the caret |
+
+---
+
+### Scroll Behavior & Scroll Margin *(bonus)*
+Useful in almost every multi-section page with anchor navigation.
+
+```html
+<!-- smooth scrolling on the whole page -->
+<html class="scroll-smooth">
+
+<!-- offset so fixed navbar doesn't cover the section heading -->
+<section id="about" class="scroll-mt-20">...</section>
+```
+
+| Class | CSS |
+|---|---|
+| `scroll-smooth` | `scroll-behavior: smooth` |
+| `scroll-mt-{n}` | `scroll-margin-top` — offset for anchor links |
+| `scroll-mb-{n}` | `scroll-margin-bottom` |
+
+Without `scroll-mt-*`, anchor links on pages with a fixed navbar land behind the nav bar. This fixes it without any JS.
+
+---
+
+### Pointer Events & Cursor *(bonus)*
+Frequently needed for disabled states, loading states, and interactive UI.
+
+```html
+<button class="cursor-not-allowed opacity-50 pointer-events-none">Disabled</button>
+<div class="cursor-pointer hover:opacity-80">Clickable card</div>
+```
+
+| Class | CSS |
+|---|---|
+| `cursor-pointer` | `cursor: pointer` |
+| `cursor-not-allowed` | `cursor: not-allowed` |
+| `cursor-default` | `cursor: default` |
+| `cursor-grab` | `cursor: grab` |
+| `cursor-text` | `cursor: text` |
+| `pointer-events-none` | `pointer-events: none` — disables all mouse interaction |
+| `pointer-events-auto` | re-enables pointer events |
+
+---
