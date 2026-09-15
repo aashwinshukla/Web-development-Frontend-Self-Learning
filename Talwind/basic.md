@@ -248,3 +248,32 @@ Pattern: `m{side}-{size}`
 | `leading-{n}` | `line-height` |
 
 ---
+
+## 5. JIT Compiler
+
+JIT stands for **Just-In-Time**. Tailwind v3 switched to a JIT compiler by default, and it changed how Tailwind generates CSS fundamentally.
+
+### How it worked before (pre-v3)
+Tailwind used to pre-generate a massive CSS file upfront — every possible class combination for every utility. That file could be **several MBs** in development. A separate purge step would remove unused classes for production builds.
+
+### How JIT works
+Instead of generating everything upfront, the JIT compiler **watches the HTML/JSX/template files in real time** and generates CSS **only for the classes actually used** — on demand, as they appear.
+
+- Write a class → CSS for that class is generated instantly
+- Remove a class → it disappears from the output
+- No bloated dev build, no separate purge step needed
+- Dev and production output are essentially the same size
+
+### What this unlocks
+JIT also enabled **arbitrary values** — a major feature that wasn't practical before:
+
+```html
+<div class="w-[320px] text-[#a855f7] mt-[13px]">
+```
+
+Any value in square brackets gets compiled on the fly. This means the full power of CSS is available without ever leaving HTML — no need to drop into a custom CSS file for one-off values.
+
+### In Tailwind Play
+Tailwind Play runs the JIT engine in the browser. Every keystroke re-runs the compiler — which is why the generated CSS in the bottom bar updates live as classes are added or removed.
+
+---
