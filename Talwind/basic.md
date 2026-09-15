@@ -606,3 +606,132 @@ Then in HTML:
 | `@apply` in `@layer components` | Repeated UI patterns like buttons, cards, inputs |
 
 ---
+
+## 10. Tailwind Directives
+
+Directives are special `@` instructions used in the CSS file that Tailwind processes. They control how Tailwind is imported, how custom styles are layered, and how the design system is extended.
+
+---
+
+### `@import "tailwindcss"`
+The entry point. Replaces the old `@tailwind base/components/utilities` three-liner from v3. One line pulls in everything.
+
+```css
+@import "tailwindcss";
+```
+
+Must be at the top of the CSS file. Everything else goes below it.
+
+---
+
+### `@theme`
+Defines custom design tokens — colors, font sizes, spacing, etc. — that Tailwind registers into its utility system. Variables defined here become usable as classes everywhere.
+
+```css
+@theme {
+  --color-brand: #6d28d9;
+  --color-surface: #1e1e2e;
+  --font-size-display: 3.5rem;
+  --spacing-section: 5rem;
+}
+```
+
+- Variables follow the pattern `--{category}-{name}`
+- Tailwind converts them into utility classes automatically
+- Acts as the single source of truth for the design system
+
+---
+
+### `@layer`
+Controls which CSS cascade layer custom styles are placed in. Tailwind has three built-in layers:
+
+```css
+@layer base {
+  /* global resets, element defaults */
+  h1 { font-size: 2rem; }
+}
+
+@layer components {
+  /* reusable UI patterns extracted with @apply */
+  .btn { @apply px-4 py-2 rounded-lg font-semibold; }
+}
+
+@layer utilities {
+  /* one-off custom utility classes */
+  .scrollbar-hide { scrollbar-width: none; }
+}
+```
+
+| Layer | Purpose |
+|---|---|
+| `base` | Element-level defaults and resets |
+| `components` | Reusable class patterns (buttons, cards, inputs) |
+| `utilities` | Single-purpose custom utilities |
+
+Order matters — `base` has lowest specificity, `utilities` has highest. This matches the Tailwind class override model.
+
+---
+
+### `@apply`
+Used inside `@layer components` (or anywhere in CSS) to compose Tailwind utility classes into a single custom class.
+
+```css
+@layer components {
+  .btn-primary {
+    @apply bg-brand text-white px-4 py-2 rounded-lg hover:opacity-90;
+  }
+}
+```
+
+Then used in HTML as a regular class:
+```html
+<button class="btn-primary">Click</button>
+```
+
+---
+
+### `@custom-variant`
+Defines a custom variant (like `dark:`, `hover:`, etc.) with custom selector logic. Used in v4 to configure dark mode behavior.
+
+```css
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+- `dark` — the variant name, used as `dark:` prefix in HTML
+- `&:where(.dark, .dark *)` — the selector condition: applies when the element or any ancestor has `.dark` class
+
+Can also define other variants:
+
+```css
+@custom-variant theme-red (&:where(.theme-red, .theme-red *));
+```
+
+Then `theme-red:bg-red-500` works in HTML whenever `.theme-red` is on a parent.
+
+---
+
+### `@source` *(v4)*
+Tells Tailwind where to scan for class names when auto-detection isn't picking up certain files.
+
+```css
+@source "../components/**/*.jsx";
+```
+
+Useful when classes are generated dynamically or come from files outside the default scan path.
+
+---
+
+### Quick reference
+
+| Directive | Purpose |
+|---|---|
+| `@import "tailwindcss"` | Loads Tailwind — entry point of the CSS file |
+| `@theme` | Defines custom design tokens (colors, sizes, spacing) |
+| `@layer base` | Global element defaults and resets |
+| `@layer components` | Reusable UI class patterns |
+| `@layer utilities` | Custom single-purpose utility classes |
+| `@apply` | Composes Tailwind classes into a custom CSS class |
+| `@custom-variant` | Creates a new variant prefix with custom selector logic |
+| `@source` | Manually adds file paths for class scanning |
+
+---
