@@ -506,3 +506,103 @@ document.documentElement.classList.toggle('dark')
 - Pairs cleanly with responsive prefixes — `md:dark:bg-gray-800` is valid
 
 ---
+
+## 9. Custom Styles & Reusability
+
+### Arbitrary Values with `[]`
+The JIT compiler allows any one-off value using square brackets:
+
+```html
+<div class="w-[320px] text-[#a855f7] mt-[13px] bg-[#1a1a2e]">...</div>
+```
+
+This works and is useful occasionally — but using `[]` everywhere is considered bad practice:
+
+- Breaks the design system — every dev can put any random value, consistency disappears
+- Harder to maintain — scattered magic numbers across the HTML
+- Defeats the purpose of having a design scale
+- No single source of truth for brand colors, spacing, etc.
+
+---
+
+### The right way — defining custom values in CSS (Tailwind v4)
+
+In Tailwind v4, custom design tokens are defined directly in CSS using `@theme` inside the main CSS file (the one with `@import "tailwindcss"`):
+
+```css
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #6d28d9;
+  --color-brand-secondary: #a78bfa;
+  --color-brand-accent: #f59e0b;
+  --color-surface: #1e1e2e;
+
+  --font-size-display: 3.5rem;
+
+  --spacing-section: 5rem;
+}
+```
+
+Tailwind automatically picks up any CSS variable defined inside `@theme` and turns it into a utility class.
+
+---
+
+### Syntax — how variables become classes
+
+The naming convention maps directly to class names:
+
+| CSS Variable | Generated class |
+|---|---|
+| `--color-brand-primary` | `bg-brand-primary`, `text-brand-primary`, `border-brand-primary` |
+| `--color-brand-secondary` | `bg-brand-secondary`, `text-brand-secondary` |
+| `--color-surface` | `bg-surface`, `text-surface` |
+| `--font-size-display` | `text-display` |
+| `--spacing-section` | `mt-section`, `py-section`, `gap-section` |
+
+Pattern: `--{category}-{name}` → `{utility}-{name}`
+
+```html
+<!-- using custom theme tokens -->
+<div class="bg-surface text-brand-primary py-section">
+  <h1 class="text-display text-brand-accent">Hello</h1>
+</div>
+```
+
+---
+
+### Reusability with `@apply`
+For truly repeated patterns (like a button style used across many components), Tailwind provides `@apply` to extract utility classes into a single reusable CSS class:
+
+```css
+@layer components {
+  .btn-primary {
+    @apply bg-brand-primary text-white px-4 py-2 rounded-lg font-semibold hover:opacity-90;
+  }
+
+  .card {
+    @apply bg-surface rounded-xl p-6 shadow-md border border-brand-secondary;
+  }
+}
+```
+
+Then in HTML:
+```html
+<button class="btn-primary">Submit</button>
+<div class="card">...</div>
+```
+
+> `@apply` should be used sparingly — only for genuinely repeated UI patterns. Overusing it brings back the same problems as writing plain CSS classes everywhere.
+
+---
+
+### Summary — when to use what
+
+| Approach | When to use |
+|---|---|
+| Utility classes directly | Most cases — the default Tailwind workflow |
+| `[]` arbitrary values | One-off values with no design-system equivalent |
+| `@theme` CSS variables | Brand colors, font sizes, spacing that repeat across the project |
+| `@apply` in `@layer components` | Repeated UI patterns like buttons, cards, inputs |
+
+---
