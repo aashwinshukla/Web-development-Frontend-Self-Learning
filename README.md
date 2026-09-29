@@ -78,3 +78,4 @@ Documenting my frontend learning journey through structured notes and projects â
 ## Status
 
 Actively learning. Notes and projects added as progress is made.
+(Soon Next.js will be added)
