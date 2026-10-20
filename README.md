@@ -14,8 +14,8 @@ Documenting my frontend learning journey through structured notes and projects �
 │   └── projects/       — 9 standalone projects
 ├── React.js/
 │   ├── notes/          — React concepts and hooks
-│   └── projects/       — React projects
-└── Talwind/            — Tailwind CSS notes, chapter-wise
+│   └── projects/       — 5 standalone projects
+└── Tailwind/            — Tailwind CSS notes, chapter-wise
 ```
 
 ---
@@ -78,3 +78,4 @@ Documenting my frontend learning journey through structured notes and projects �
 ## Status
 
 Actively learning. Notes and projects added as progress is made.
+(Soon Next.js will be added)
