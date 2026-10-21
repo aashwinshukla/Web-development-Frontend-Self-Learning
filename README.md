@@ -1,6 +1,6 @@
 # Frontend Web Development — Learning in Public
 
-Documenting my frontend learning journey through structured notes and projects — HTML, CSS, JavaScript, React, and Tailwind CSS. Built as a personal reference and a record of progress.
+Documenting my frontend learning journey through structured notes and projects — HTML, CSS, JavaScript, React, Tailwind CSS, and Bootstrap. Built as a personal reference and a record of progress.
 
 ---
 
@@ -15,7 +15,8 @@ Documenting my frontend learning journey through structured notes and projects �
 ├── React.js/
 │   ├── notes/          — React concepts and hooks
 │   └── projects/       — 5 standalone projects
-└── Tailwind/            — Tailwind CSS notes, chapter-wise
+├── Talwind/            — Tailwind CSS notes, chapter-wise
+└── Bootstrap/          — Bootstrap notes, chapter-wise
 ```
 
 ---
@@ -65,6 +66,15 @@ Documenting my frontend learning journey through structured notes and projects �
 
 ---
 
+## Bootstrap Notes
+
+| File | Topics |
+|---|---|
+| `00-introduction.md` | What Bootstrap is, why use it, vs Tailwind CSS |
+| `01-setup.md` | Downloaded compiled CSS & JS, CDN, npm setup |
+
+---
+
 ## Stack
 
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
@@ -72,10 +82,11 @@ Documenting my frontend learning journey through structured notes and projects �
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
 
 ---
 
 ## Status
 
 Actively learning. Notes and projects added as progress is made.
-(Soon Next.js will be added)
+Soon — Next.js.
