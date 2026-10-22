@@ -1,14 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosmos — Explore the Universe</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <style>
+    /* ── base ── */
+    body {
+      background-color: #0a0a1a;
+      color: #e0e0f0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* ── navbar ── */
+    .navbar {
+      background-color: #0d0d2b;
+      border-bottom: 1px solid #1e1e4a;
+    }
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #a78bfa !important;
+      letter-spacing: 2px;
+    }
+    .nav-link {
+      color: #c4c4e0 !important;
+      transition: color 0.2s;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: #a78bfa !important;
+    }
+
+    /* ── hero section ── */
+    .hero-section {
+      padding: 80px 0;
+    }
+    .hero-section img {
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(167, 139, 250, 0.25);
+    }
+    .hero-section h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+    .hero-section h1 span {
+      color: #a78bfa;
+    }
+    .hero-section p {
+      color: #b0b0cc;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+    .btn-cosmos {
+      background-color: #a78bfa;
+      color: #0a0a1a;
+      font-weight: 600;
+      padding: 10px 28px;
+      border-radius: 30px;
+      border: none;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    .btn-cosmos:hover {
+      background-color: #c4b5fd;
+      transform: translateY(-2px);
+    }
+
+    /* ── jumbotron strip ── */
+    .jumbotron-strip {
+      background-color: #111130;
+      border-top: 1px solid #1e1e4a;
+      border-bottom: 1px solid #1e1e4a;
+      padding: 32px 0;
+    }
+    .jumbotron-strip p {
+      color: #c4c4e0;
+      font-size: 1.1rem;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── cards section ── */
+    .cards-section {
+      padding: 70px 0;
+    }
+    .cards-section .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 40px;
+    }
+    .cards-section .section-title span {
+      color: #a78bfa;
+    }
+    .cosmos-card {
+      background-color: #0f0f2e;
+      border: 1px solid #1e1e4a;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cosmos-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 30px rgba(167, 139, 250, 0.2);
+    }
+    .cosmos-card img {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+    .cosmos-card .card-body {
+      padding: 20px;
+    }
+    .cosmos-card .card-title {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    .cosmos-card .card-text {
+      color: #9090b8;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .btn-cosmos-outline {
+      border: 1px solid #a78bfa;
+      color: #a78bfa;
+      background: transparent;
+      border-radius: 20px;
+      padding: 6px 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .btn-cosmos-outline:hover {
+      background-color: #a78bfa;
+      color: #0a0a1a;
+    }
+
+    /* ── contact ── */
+    .contact-section {
+      background-color: #0d0d2b;
+      border-top: 1px solid #1e1e4a;
+      padding: 70px 0;
+    }
+    .contact-section h2 {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+    .contact-section p {
+      color: #9090b8;
+      font-size: 1rem;
+    }
+    .form-control-cosmos {
+      background-color: #111130;
+      border: 1px solid #2a2a5a;
+      color: #e0e0f0;
+      border-radius: 8px;
+    }
+    .form-control-cosmos::placeholder {
+      color: #5a5a8a;
+    }
+    .form-control-cosmos:focus {
+      background-color: #111130;
+      border-color: #a78bfa;
+      color: #e0e0f0;
+      box-shadow: 0 0 0 0.2rem rgba(167, 139, 250, 0.2);
+    }
+
+    /* ── footer ── */
+    .cosmos-footer {
+      background-color: #0a0a1a;
+      border-top: 1px solid #1e1e4a;
+      padding: 20px 0;
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
+    }
+    .cosmos-footer p {
+      color: #5a5a8a;
+      font-size: 0.85rem;
+      margin: 0;
+    }
+    .cosmos-footer a {
+      color: #a78bfa;
+      text-decoration: none;
+    }
+    .cosmos-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <h1>hello bootstrap world</h1>
-    
-    <script src="js/bootstrap.bundle.js"></script>
+
+  <!-- ══════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════ -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">✦ COSMOS</a>
+
+      <button class="navbar-toggler" type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarMain"
+        style="border-color: #a78bfa;">
+        <span class="navbar-toggler-icon" style="filter: invert(70%) sepia(60%) saturate(500%) hue-rotate(210deg);"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto gap-2">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#explore">Explore</a></li>
+          <li class="nav-item"><a class="nav-link" href="#discoveries">Discoveries</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════
+       HERO — image left, info right
+  ══════════════════════════════════════ -->
+  <section class="hero-section" id="explore">
+    <div class="container">
+      <div class="row align-items-center g-5">
+
+        <div class="col-12 col-md-6">
+          <img
+            src="https://images.unsplash.com/photo-1446941611757-91d2c3bd3d45?w=700&q=80"
+            class="img-fluid"
+            alt="Milky Way galaxy stretching across the night sky"
+          />
+        </div>
+
+        <div class="col-12 col-md-6">
+          <h1>Explore the <span>Milky Way</span><br />Like Never Before</h1>
+          <p class="mt-3">
+            Our galaxy spans over 100,000 light-years and is home to more than
+            300 billion stars. From the dense galactic core to the outer spiral
+            arms, every corner holds phenomena that challenge our understanding
+            of physics, time, and existence itself.
+          </p>
+          <a href="#discoveries" class="btn btn-cosmos mt-3">Discover More →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       JUMBOTRON STRIP — centered line
+  ══════════════════════════════════════ -->
+  <div class="jumbotron-strip text-center">
+    <div class="container">
+      <p>
+        "The cosmos is within us. We are made of star-stuff." —
+        <em>Carl Sagan</em>
+      </p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       CARDS — three in a row
+  ══════════════════════════════════════ -->
+  <section class="cards-section" id="discoveries">
+    <div class="container">
+      <h2 class="section-title text-center">Latest <span>Discoveries</span></h2>
+
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+
+        <!-- card 1 -->
+        <div class="col">
+          <div class="cosmos-card">
+            <img
+              src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=600&q=80"
+              alt="Black hole visualization"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Black Holes at the Edge of Time</h5>
+              <p class="card-text">
+                Astronomers have detected supermassive black holes formed just
+                400 million years after the Big Bang — far earlier than models
+                predicted.
+              </p>
+              <button class="btn btn-cosmos-outline mt-2">Read More</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- card 2 -->
+        <div class="col">
+          <div class="cosmos-card">
+            <img
+              src="https://images.unsplash.com/photo-1630694093867-4b947d812bf0?w=600&q=80"
+              alt="Exoplanet in deep space"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Earth-Like Exoplanets Found</h5>
+              <p class="card-text">
+                The James Webb Space Telescope identified three rocky exoplanets
+                in the habitable zone of a nearby star, raising hopes for
+                extraterrestrial life.
+              </p>
+              <button class="btn btn-cosmos-outline mt-2">Read More</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- card 3 -->
+        <div class="col">
+          <div class="cosmos-card">
+            <img
+              src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&q=80"
+              alt="Nebula in deep space"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Nebulae — Stellar Nurseries</h5>
+              <p class="card-text">
+                New imaging reveals the intricate structure of the Eagle Nebula's
+                Pillars of Creation — towering columns of gas and dust where
+                new stars are actively forming.
+              </p>
+              <button class="btn btn-cosmos-outline mt-2">Read More</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════ -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-7 text-center mb-5">
+          <h2>Get in Touch</h2>
+          <p>Have questions about the cosmos? Reach out and we'll get back to you across any light-cone.</p>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-6">
+          <form>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control form-control-cosmos"
+                placeholder="Your Name"
+              />
+            </div>
+            <div class="mb-3">
+              <input
+                type="email"
+                class="form-control form-control-cosmos"
+                placeholder="Your Email"
+              />
+            </div>
+            <div class="mb-3">
+              <textarea
+                class="form-control form-control-cosmos"
+                rows="4"
+                placeholder="Your message..."
+              ></textarea>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-cosmos">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       STICKY FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="cosmos-footer text-center">
+    <div class="container">
+      <p>
+        © 2026 <a href="#">Cosmos</a> — Built with Bootstrap 5 &nbsp;·&nbsp;
+        <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a>
+      </p>
+    </div>
+  </footer>
+
+
+  <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
