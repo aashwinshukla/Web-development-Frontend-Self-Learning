@@ -72,6 +72,16 @@ Documenting my frontend learning journey through structured notes and projects â
 |---|---|
 | `00-introduction.md` | What Bootstrap is, why use it, vs Tailwind CSS |
 | `01-setup.md` | Downloaded compiled CSS & JS, CDN, npm setup |
+| `02-grid-system.md` | Container, rows, columns, responsive breakpoints, gutters, offset, nesting |
+| `03-buttons.md` | Variants, outline, sizes, states, button groups |
+| `04-cards.md` | Card sections, image, colors, list group, horizontal card, grid layout |
+| `05-typography.md` | Headings, display, lead, inline elements, alignment, weight, color, lists |
+| `06-images-and-utilities.md` | Responsive images, shapes, spacing, display, flex, sizing, colors, borders, shadows, position |
+| `07-tables-and-alerts.md` | Table variants, colors, responsive tables, alert variants, dismissible alerts |
+| `08-navs-and-navbars.md` | Nav tabs/pills, navbar, toggler, dropdowns, fixed/sticky positioning |
+| `09-icons.md` | Bootstrap Icons setup, usage, sizing, colors, common icon reference |
+| `10-forms.md` | Inputs, select, checkbox, radio, switch, range, file, input group, floating labels, validation |
+| `11-other-components.md` | Modal, dropdown, accordion, tooltip, toast, spinner, badge, progress, list group, pagination, offcanvas |
 
 ---
 
