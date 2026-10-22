@@ -1,6 +1,6 @@
 # Frontend Web Development — Learning in Public
 
-Documenting my frontend learning journey through structured notes and projects — HTML, CSS, JavaScript, React, Tailwind CSS, and Bootstrap. Built as a personal reference and a record of progress.
+Documenting my frontend learning journey through structured notes and projects — HTML, CSS, JavaScript, React, Tailwind CSS, Bootstrap, and Next.js. Built as a personal reference and a record of progress.
 
 ---
 
@@ -16,7 +16,8 @@ Documenting my frontend learning journey through structured notes and projects �
 │   ├── notes/          — React concepts and hooks
 │   └── projects/       — 5 standalone projects
 ├── Talwind/            — Tailwind CSS notes, chapter-wise
-└── Bootstrap/          — Bootstrap notes, chapter-wise
+├── Bootstrap/          — Bootstrap notes, chapter-wise
+└── Next.js/            — Next.js notes and projects (coming soon)
 ```
 
 ---
@@ -93,10 +94,11 @@ Documenting my frontend learning journey through structured notes and projects �
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+![Next.js](https://img.shields.io/badge/next.js-%23000000.svg?style=for-the-badge&logo=next.js&logoColor=white)
 
 ---
 
 ## Status
 
 Actively learning. Notes and projects added as progress is made.
-Soon — Next.js.
+Soon — Next.js (notes + projects).
