@@ -25,7 +25,7 @@ export default async function PostsPage(){
                     {posts.slice(0, 5).map((posts) => (
                         <li key={posts.id}>
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                <Link href={`/posts/${posts.id}`} className="text-lg font-semibold text-zinc-950 hover:text-zinc-500">
+                                <Link href={`/post/${posts.id}`} className="text-lg font-semibold text-zinc-950 hover:text-zinc-500">
                                     {posts.title.charAt(0).toUpperCase() + posts.title.slice(1)}
                                 </Link>
                             </div>
