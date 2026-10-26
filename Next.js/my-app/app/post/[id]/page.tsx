@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 type Post = {
     id: number;
     title: string;
@@ -15,6 +17,9 @@ export default async function PostPage({ params }: Props) {
     const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
         cache: "no-store",
     });
+
+    if (!response.ok) notFound();
+
     const post: Post = await response.json();
 
     return (

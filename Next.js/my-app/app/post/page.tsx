@@ -14,6 +14,8 @@ export default async function PostsPage(){
     });
     const posts: Post[] = await response.json();
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     return (
         <div className="space-y-8">
             <section className="space-y-4">
@@ -22,11 +24,11 @@ export default async function PostsPage(){
                 </h1>
 
                 <ul className="space-y-3">
-                    {posts.slice(0, 5).map((posts) => (
-                        <li key={posts.id}>
+                    {posts.slice(0, 5).map((post) => (
+                        <li key={post.id}>
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                <Link href={`/post/${posts.id}`} className="text-lg font-semibold text-zinc-950 hover:text-zinc-500">
-                                    {posts.title.charAt(0).toUpperCase() + posts.title.slice(1)}
+                                <Link href={`/post/${post.id}`} className="text-lg font-semibold text-zinc-950 hover:text-zinc-500">
+                                    {post.title.charAt(0).toUpperCase() + post.title.slice(1)}
                                 </Link>
                             </div>
                         </li>
