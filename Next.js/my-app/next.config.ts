@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
     // false - disabled
 
   },
+
+  cacheComponents: true,
+  partialPrefetching: true,
   
   turbopack: {
     rules: {

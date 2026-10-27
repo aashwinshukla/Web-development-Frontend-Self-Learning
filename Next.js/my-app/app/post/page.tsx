@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+
+export const instant = false;
 import RecentlyViewedPost from "@/components/recently-viewed-post";
 import { Suspense } from "react";
 
@@ -16,8 +18,6 @@ export default async function PostsPage(){
         cache: "no-store",
     });
     const posts: Post[] = await response.json();
-
-    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     return (
         <div className="space-y-8">
