@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import RecentlyViewedPost from "@/components/recently-viewed-post";
+import { Suspense } from "react";
 
 type Post = {
     id: number;
@@ -35,6 +38,12 @@ export default async function PostsPage(){
                     ))}
                 </ul>
             </section>
+
+            <Suspense fallback={<p>Loading recently viewed posts...</p>}>
+                <RecentlyViewedPost/>
+            </Suspense>
+               
+            
         </div>
     );
 }
