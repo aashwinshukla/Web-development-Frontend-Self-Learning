@@ -431,3 +431,149 @@ Is the route reading cookies / headers / uncached fetch?
                   ├── Yes → Partial Prerender — static shell + dynamic stream
                   └── No  → export const instant = false → fully dynamic
 ```
+
+---
+
+## Cache Components (`"use cache"`)
+
+`"use cache"` is a Next.js 16 directive — similar to `"use client"` and `"use server"` but for caching. It marks a function or component so its output is **cached on the server** and reused across requests.
+
+Requires `cacheComponents: true` in `next.config.ts` to be enabled.
+
+---
+
+### On a function
+
+```ts
+"use cache";
+
+export async function getPosts() {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    return response.json();
+}
+```
+
+The first time `getPosts()` is called, it fetches and caches the result. Every subsequent call returns the cached value — no network request made.
+
+---
+
+### On a component
+
+```tsx
+"use cache";
+
+export default async function PostsList() {
+    const posts = await getPosts();
+
+    return (
+        <ul>
+            {posts.map((post) => (
+                <li key={post.id}>{post.title}</li>
+            ))}
+        </ul>
+    );
+}
+```
+
+The entire rendered output of the component is cached. Next.js stores the React Server Component payload and reuses it across requests.
+
+---
+
+### Cache lifetime — `cacheLife`
+
+By default `"use cache"` caches indefinitely. Control the lifetime with `cacheLife`:
+
+```ts
+"use cache";
+import { cacheLife } from "next/cache";
+
+export async function getPosts() {
+    cacheLife("hours"); // revalidate after a few hours
+
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    return response.json();
+}
+```
+
+Built-in profiles:
+
+| Profile | Revalidates after |
+|---|---|
+| `"seconds"` | A few seconds |
+| `"minutes"` | A few minutes |
+| `"hours"` | A few hours |
+| `"days"` | A few days |
+| `"weeks"` | A few weeks |
+| `"max"` | As long as possible |
+
+---
+
+### Cache tags — `cacheTag`
+
+Tag a cached function so it can be manually invalidated later:
+
+```ts
+"use cache";
+import { cacheTag } from "next/cache";
+
+export async function getPosts() {
+    cacheTag("posts"); // tag this cache entry
+
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    return response.json();
+}
+```
+
+Then invalidate from a Server Action:
+
+```ts
+"use server";
+import { revalidateTag } from "next/cache";
+
+export async function invalidatePosts() {
+    revalidateTag("posts"); // clears all cache entries tagged "posts"
+}
+```
+
+---
+
+### `"use cache"` vs `cache: "no-store"` vs default fetch cache
+
+| | Behaviour |
+|---|---|
+| `"use cache"` on function/component | Caches the result on the server, reused across requests |
+| `fetch(url)` (default) | Cached by Next.js data cache |
+| `fetch(url, { cache: "no-store" })` | Never cached — always fresh |
+| `fetch(url, { next: { revalidate: 60 } })` | Cached, revalidated every 60 seconds |
+
+---
+
+### In this project
+
+Currently `post/page.tsx` uses `cache: "no-store"` because it reads cookies — cookies are per-request so the page must be dynamic. `"use cache"` wouldn't apply here.
+
+But the posts fetch itself (the list) could be cached since it doesn't change often:
+
+```ts
+// lib/posts.ts
+"use cache";
+import { cacheLife } from "next/cache";
+
+export async function getAllPosts() {
+    cacheLife("hours");
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    return response.json();
+}
+```
+
+Then in `post/page.tsx` — the cookie read makes the route dynamic, but the posts data itself comes from cache rather than a fresh fetch every request.
+
+---
+
+### Key points
+
+- `"use cache"` is placed at the **top of the file** (applies to all exports) or at the **top of a function body** (applies to that function only)
+- Works on both async functions and async Server Components
+- Cannot be used in Client Components (`"use client"` files)
+- Replaces the need for `unstable_cache` from older Next.js versions
+- Requires `cacheComponents: true` in `next.config.ts` — that's the only reason that config option exists
