@@ -268,3 +268,166 @@ const nextConfig: NextConfig = {
 - Always run `npm run build` before deploying — it catches type errors and shows the rendering strategy for every route
 - `revalidate = 0` is equivalent to `cache: "no-store"` at route level
 - Prisma queries are always dynamic — there's no built-in caching layer for them, unlike `fetch()`. Use `unstable_cache` from `next/cache` to cache Prisma results if needed
+
+---
+
+## Partial Rendering with Suspense
+
+### The Problem Without Suspense
+
+Without Suspense, the entire page waits for the slowest data fetch before anything is shown to the user. If one section takes 5 seconds, the whole page is blank for 5 seconds.
+
+```tsx
+// everything blocks until ALL data is ready — bad UX
+export default async function PostsPage() {
+    const posts = await fetchPosts();           // 500ms
+    const recentlyViewed = await fetchRecent(); // 5000ms
+    // user sees nothing for 5.5 seconds
+}
+```
+
+---
+
+### Suspense — Stream Parts Independently
+
+`<Suspense>` lets slow parts of the page load independently. The fast parts render immediately, the slow parts show a fallback until they're ready — all in a single page load, no client JS needed.
+
+```tsx
+import { Suspense } from "react";
+import RecentlyViewedPost from "@/components/recently-viewed-post";
+
+export default async function PostsPage() {
+    const posts = await fetchPosts(); // fast — renders immediately
+
+    return (
+        <div>
+            {/* renders right away */}
+            <ul>
+                {posts.map((post) => <li key={post.id}>{post.title}</li>)}
+            </ul>
+
+            {/* shows fallback instantly, streams in after 5s */}
+            <Suspense fallback={<p>Loading recently viewed posts...</p>}>
+                <RecentlyViewedPost />
+            </Suspense>
+        </div>
+    );
+}
+```
+
+The page HTML is **streamed** from the server — the browser receives and paints the fast parts first, then the slow parts stream in as they resolve.
+
+---
+
+### How it works in this project
+
+```
+/post page loads
+    ↓
+Posts list renders immediately (fast fetch)
+    ↓
+<Suspense> boundary mounts — shows "Loading recently viewed posts..."
+    ↓
+RecentlyViewedPost component resolves after 5s (reads cookie + fetches posts)
+    ↓
+Fallback replaced with the actual recently viewed list
+```
+
+`recently-viewed-post.tsx` is an async Server Component. The delay lives inside it — not in the parent — so only that section is held back, not the whole page.
+
+---
+
+### Suspense Fallback
+
+The `fallback` prop is what shows while the component is loading. Can be anything — text, a spinner, a skeleton:
+
+```tsx
+// simple text
+<Suspense fallback={<p>Loading...</p>}>
+
+// spinner
+<Suspense fallback={<div className="animate-spin h-5 w-5 border-2 border-zinc-400 rounded-full" />}>
+
+// skeleton
+<Suspense fallback={<div className="h-10 w-full rounded bg-zinc-200 animate-pulse" />}>
+```
+
+---
+
+### `loading.tsx` — Route-level Suspense
+
+`loading.tsx` placed inside a route folder is Next.js's built-in Suspense wrapper for the entire route. It automatically wraps the page in a `<Suspense>` with the loading UI as the fallback.
+
+```
+app/
+└── post/
+    ├── page.tsx
+    └── loading.tsx   ← shown while page.tsx is loading
+```
+
+```tsx
+// app/post/loading.tsx
+export default function Loading() {
+    return <p className="text-zinc-500">Loading posts...</p>;
+}
+```
+
+- Triggered when navigating to `/post` — shows instantly while `page.tsx` fetches data
+- Does NOT affect nested `<Suspense>` boundaries inside the page — those work independently
+
+---
+
+### Partial Prerendering (PPR) — `cacheComponents` + `partialPrefetching`
+
+Partial Prerendering is a Next.js 16 experimental feature that combines static and dynamic rendering **within the same route**:
+
+- The **static shell** (layout, non-dynamic content) is pre-rendered at build time and served instantly from cache
+- The **dynamic holes** (`<Suspense>` boundaries with dynamic content) are streamed in at request time
+
+```tsx
+// next.config.ts
+const nextConfig = {
+    cacheComponents: true,      // enables the static shell caching
+    partialPrefetching: true,   // prefetches the static shell on hover
+};
+```
+
+```tsx
+// the static shell — pre-rendered at build
+<div>
+    <h1>Posts</h1>       {/* static — in the shell */}
+    <ul>...</ul>         {/* static — in the shell */}
+
+    {/* dynamic hole — streamed at request time */}
+    <Suspense fallback={<p>Loading recently viewed...</p>}>
+        <RecentlyViewedPost />   {/* reads cookies = dynamic */}
+    </Suspense>
+</div>
+```
+
+The user gets the static shell **instantly** (from cache), then the dynamic parts stream in. Fastest possible experience — no waiting for the whole page.
+
+### `export const instant = false`
+
+When PPR is enabled, Next.js expects every dynamic access (`cookies()`, `headers()`, uncached `fetch`) to be inside a `<Suspense>` boundary. If it's not — the build fails.
+
+`export const instant = false` opts the route out of this requirement — tells Next.js it's fine to block the whole route on dynamic data, like the old behaviour:
+
+```ts
+// app/post/page.tsx
+export const instant = false;
+```
+
+Use this as a temporary escape hatch when migrating. For best performance, wrap dynamic parts in `<Suspense>` instead.
+
+---
+
+## Summary — Rendering Decision Tree
+
+```
+Is the route reading cookies / headers / uncached fetch?
+    ├── No  → Static — pre-rendered at build, served from cache
+    └── Yes → Is it inside <Suspense>?
+                  ├── Yes → Partial Prerender — static shell + dynamic stream
+                  └── No  → export const instant = false → fully dynamic
+```
